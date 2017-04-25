@@ -1,5 +1,18 @@
 *.class
 
+#folders#
+.settings
+target
+
+#files#
+pom.xml
+.project
+.classpath
+*.jsp
+
+#image files#
+*.jpg
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
