@@ -36,6 +36,9 @@ public class CustomerDao {
 	}
 	
 	public boolean checkingCustomer(Customer customer){
+		emf = Persistence.createEntityManagerFactory("loginUnit");
+		em = emf.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
 		
 		return true;
 	}
