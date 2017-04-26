@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.funcart.Dao.CustomerDao;
-import com.funcart.customer.Customer;
+import com.funcart.domain.Customer;
 
 @RestController
 public class CustomerController {
@@ -40,7 +40,7 @@ public class CustomerController {
 	}
 	
 	@RequestMapping(value = "/signupDetail",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public boolean insertSignupDetail(@RequestBody Customer customer){
+	public boolean insertSignupDetail(@RequestBody Customer customer) throws Exception{
 		boolean flag = true;
 		if(customer.checkSignupDetail()){
 			if(customerDao.insertCustomer(customer))
