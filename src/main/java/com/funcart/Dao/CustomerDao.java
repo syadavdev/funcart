@@ -35,7 +35,7 @@ public class CustomerDao {
 		query.setParameter("password", customer.getPassword());
 		try {
 			customer = (Customer) query.getSingleResult();
-			System.out.println(customer.getUsername());
+			
 			
 				flag = true;
 			
