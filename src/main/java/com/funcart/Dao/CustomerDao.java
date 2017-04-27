@@ -21,16 +21,26 @@ public class CustomerDao {
 	@PersistenceContext
 	private EntityManager em;
 
-	@Transactional(rollbackOn=Exception.class)
-	public boolean insertCustomer(Customer customer)throws Exception{
+	@Transactional(rollbackOn = Exception.class)
+	public boolean insertCustomer(Customer customer) throws Exception {
 		em.persist(customer);
 		return true;
 	}
 
-	public boolean checkingCustomer(Customer customer){
-		Query query = em.createQuery("SELECT username,password FROM customer");
-
-		return true;
+	public boolean checkingCustomer(Customer customer) {
+		boolean flag = false;
+		Query query = em.createQuery(
+				"SELECT customer FROM Customer customer WHERE customer.username = :username AND customer.password = :password");
+		query.setParameter("username", customer.getUsername());
+		query.setParameter("password", customer.getPassword());
+		try {
+			customer = (Customer) query.getSingleResult();
+	
+				flag = true;
+			
+		} catch (Exception e) {
+			flag = false;
+		}
+		return flag;
 	}
-
 }
