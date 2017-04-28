@@ -8,14 +8,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.funcart.Dao.CustomerDao;
+import com.funcart.Dao.LoginDao;
+import com.funcart.Dao.SignUpDao;
 import com.funcart.domain.Customer;
 
 @RestController
 public class CustomerController {
 	
 	@Autowired
-	CustomerDao customerDao;
+	SignUpDao signupDao;
+	
+	@Autowired
+	LoginDao loginDao;
 	
 	@RequestMapping(value="/loginPage",method=RequestMethod.GET)
 	public ModelAndView getLoginPage(){
@@ -30,9 +34,9 @@ public class CustomerController {
 	}
 
 	@RequestMapping(value = "/loginDetail",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public boolean insertLoginDetail(@RequestBody Customer customer){
+	public boolean checkLoginDetail(@RequestBody Customer customer){
 		boolean flag = true;
-		if(customerDao.checkingCustomer(customer))
+		if(loginDao.checkLoginDetail(customer))
 			flag = true;
 		else
 			flag = false;
@@ -41,14 +45,9 @@ public class CustomerController {
 	
 	@RequestMapping(value = "/signupDetail",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public boolean insertSignupDetail(@RequestBody Customer customer) throws Exception{
-		boolean flag = true;
-		if(customer.checkSignupDetail()){
-			if(customerDao.insertCustomer(customer))
-				flag = true;
-		}
-		else{
-			flag = false;
-		}
+		boolean flag = false;
+		if(signupDao.insertCustomer(customer))
+					flag = true;
 		return flag;
 	}
 }
