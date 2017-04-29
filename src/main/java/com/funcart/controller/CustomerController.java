@@ -35,13 +35,12 @@ public class CustomerController {
 	}
 
 	@RequestMapping(value = "/loginDetail",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public boolean checkLoginDetail(@RequestBody Customer customer){
-		boolean flag = true;
-		if(loginDao.checkLoginDetail(customer))
-			flag = true;
+	public @ResponseBody Customer checkLoginDetail(@RequestBody Customer customer){
+		Customer ct = null;
+		if((ct = loginDao.checkLoginDetail(customer)) != null)
+			return ct;
 		else
-			flag = false;
-		return flag;
+			return new Customer();
 	}
 	
 	@RequestMapping(value = "/signupDetail",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
