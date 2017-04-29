@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -44,10 +45,11 @@ public class CustomerController {
 	}
 	
 	@RequestMapping(value = "/signupDetail",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public boolean insertSignupDetail(@RequestBody Customer customer) throws Exception{
-		boolean flag = false;
+	public @ResponseBody Customer insertSignupDetail(@RequestBody Customer customer) throws Exception{
 		if(signupDao.insertCustomer(customer))
-					flag = true;
-		return flag;
+			return customer;
+		else
+			return new Customer();
+		
 	}
 }

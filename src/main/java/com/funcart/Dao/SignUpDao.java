@@ -18,8 +18,13 @@ public class SignUpDao {
 	public boolean insertCustomer(Customer customer)throws Exception{
 		boolean flag = false;
 		if(checkSignupDetail(customer)){
-			em.persist(customer);
-			flag = true;
+			try{
+				em.persist(customer);
+				flag = true;
+			}catch(Exception e){
+				e.printStackTrace();
+				flag = false;
+			}
 		}
 		return flag;
 	}
