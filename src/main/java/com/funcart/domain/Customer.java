@@ -24,7 +24,7 @@ public class Customer{
 	
 	@Column
 	private long phoneNumber;
-	
+	 
 	//getter setter
 	
 	public long getPhoneNumber() {
@@ -58,19 +58,4 @@ public class Customer{
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	public boolean checkSignupDetail(){
-		boolean flag = true;
-		if(this.getEmail().isEmpty() || this.getPassword().isEmpty() || this.getUsername().isEmpty() || 
-				Long.toString(this.getPhoneNumber()).length() != 10){
-	
-				flag = false;
-		}
-		else{
-			flag = true;
-		}
-		return flag;
-	}
-	
 }
-
