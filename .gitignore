@@ -7,7 +7,7 @@ target
 #files#
 .project
 .classpath
-funcartDispacture-servlet-sample.xml
+funcartDispacture-servlet.xml
 
 #image files#
 
