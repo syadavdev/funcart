@@ -16,20 +16,26 @@
     http://www.springframework.org/schema/context/spring-context.xsd">
     
     <mvc:annotation-driven />
+    <mvc:default-servlet-handler/>
+    <mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/"/>
+    <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
     
     <context:component-scan base-package="com.funcart.*" />
     
-    <bean id="entityManagerFactory"
-   	  class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-	    <property name="dataSource" ref="jpaDataSource" />
-	    <property name="packagesToScan" value="com.funcart.domain" />
-	    <property name="jpaVendorAdapter">
-	        <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-	            <property name="databasePlatform" value="org.hibernate.dialect.MySQLDialect" />
-	            <property name="showSql" value="true"/>
-	        </bean>
-	    </property>
-	</bean>
+   <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+      <property name="dataSource" ref="jpaDataSource" />
+      <property name="packagesToScan" value="com.funcart.domain" />
+      <property name="jpaVendorAdapter">
+         <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+      </property>
+      <property name="jpaProperties">
+         <props>
+            <prop key="hibernate.hbm2ddl.auto">update</prop>
+            <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+            <prop key="hibernate.show_sql">true</prop>
+         </props>
+      </property>
+   </bean>
 	
 	<bean id="jpaDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 	    <property name="driverClassName" value="com.mysql.jdbc.Driver" />
@@ -50,5 +56,8 @@
       <property name = "prefix" value = "/WEB-INF/jspPages/" />
       <property name = "suffix" value = ".jsp" />
    	</bean>
+   	
+   	<!--  Swagger -->
+   	<bean id="docket" class="com.funcart.swagger.Swagger"></bean>
 	
 </beans>
