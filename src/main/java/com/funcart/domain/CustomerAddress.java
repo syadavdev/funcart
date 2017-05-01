@@ -31,4 +31,7 @@ public class CustomerAddress {
 	public void setBillingAddress(String billingAddress) {
 		this.billingAddress = billingAddress;
 	}
+	public int getId() {
+		return id;
+	}
 }

@@ -18,7 +18,7 @@ public class LoginDao {
 		  Customer ct = null;
 		 
 		  Query query = 
-				em.createQuery("from Customer as o where o.username = ? and o.password = ?")
+				em.createQuery("Select o from Customer as o where o.username = ? and o.password = ?")
 					.setParameter(0,customer.getUsername())
 					.setParameter(1,customer.getPassword());
 		  

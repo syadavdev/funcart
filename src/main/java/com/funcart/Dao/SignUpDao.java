@@ -19,7 +19,13 @@ public class SignUpDao {
 		boolean flag = false;
 		if(checkSignupDetail(customer)){
 			try{
-				em.persist(customer);
+				int result = em.createNativeQuery("INSERT INTO customer (username, password, email, phoneNumber)"
+									+ " VALUES (?, ?, ?, ?)")
+							   .setParameter(1,customer.getUsername())
+							   .setParameter(2, customer.getPassword())
+							   .setParameter(3, customer.getEmail())
+							   .setParameter(4, customer.getPhoneNumber())
+							   .executeUpdate();
 				flag = true;
 			}catch(Exception e){
 				e.printStackTrace();
