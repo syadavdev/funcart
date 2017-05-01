@@ -20,7 +20,7 @@ public class ItemsDao {
 		List<Items> itemsList = null;
 		
 		try{
-			itemsList = em.createQuery("select i from Items i").getResultList();
+			itemsList = em.createQuery("select i from Items i",Items.class).getResultList();
 							
 		}catch(Exception e){
 			e.printStackTrace();

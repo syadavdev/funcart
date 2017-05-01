@@ -23,6 +23,14 @@ public class Items{
 		return picName;
 	}
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public void setPicName(String picName) {
 		this.picName = picName;
 	}
