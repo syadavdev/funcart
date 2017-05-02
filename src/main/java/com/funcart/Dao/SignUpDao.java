@@ -15,23 +15,24 @@ public class SignUpDao {
 	private EntityManager em;
 	
 	@Transactional(rollbackOn=Exception.class)
-	public boolean insertCustomer(Customer customer)throws Exception{
+	public boolean saveCustomer(Customer customer)throws Exception{
 		boolean flag = false;
-		if(checkSignupDetail(customer)){
-			try{
-				int result = em.createNativeQuery("INSERT INTO customer (username, password, email, phoneNumber)"
-									+ " VALUES (?, ?, ?, ?)")
-							   .setParameter(1,customer.getUsername())
-							   .setParameter(2, customer.getPassword())
-							   .setParameter(3, customer.getEmail())
-							   .setParameter(4, customer.getPhoneNumber())
-							   .executeUpdate();
-				flag = true;
+		try{
+			if(checkSignupDetail(customer)){
+			
+				int result = em.createNativeQuery("INSERT INTO customer (username, password, email, phoneNumber) VALUES (?, ?, ?, ?)")
+								.setParameter(1,customer.getUsername())
+								.setParameter(2, customer.getPassword())
+								.setParameter(3, customer.getEmail())
+								.setParameter(4, customer.getPhoneNumber())
+								.executeUpdate();
+				
+					if(result > 0)
+						flag = true;
+				}
 			}catch(Exception e){
-				e.printStackTrace();
-				flag = false;
+				throw e;
 			}
-		}
 		return flag;
 	}
 	

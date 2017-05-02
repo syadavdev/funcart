@@ -4,11 +4,10 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
-import com.funcart.domain.Items;
+import com.funcart.domain.Item;
 
 @Repository
 public class ItemsDao {
@@ -16,11 +15,11 @@ public class ItemsDao {
 	@PersistenceContext
 	private EntityManager em;
 	
-	public List<Items> getItemsList(){
-		List<Items> itemsList = null;
+	public List<Item> getItemsList(){
+		List<Item> itemsList = null;
 		
 		try{
-			itemsList = em.createQuery("select i from Items i",Items.class).getResultList();
+			itemsList = em.createQuery("select i from Item i",Item.class).getResultList();
 							
 		}catch(Exception e){
 			e.printStackTrace();
