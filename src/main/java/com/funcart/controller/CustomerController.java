@@ -10,15 +10,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.funcart.Dao.ItemsDao;
-import com.funcart.Dao.LoginDao;
-import com.funcart.Dao.SignUpDao;
+import com.funcart.dao.ItemsDao;
+import com.funcart.dao.LoginDao;
+import com.funcart.dao.service.CustomerService;
 import com.funcart.domain.Customer;
 import com.funcart.domain.Item;
+import com.funcart.domain.dto.LoginDto;
+import com.funcart.domain.dto.SignupDto;
 
 @RestController
 public class CustomerController {
@@ -26,7 +27,7 @@ public class CustomerController {
 	HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 	
 	@Autowired
-	private SignUpDao signupDao;
+	private CustomerService customerService;
 	
 	@Autowired
 	private LoginDao loginDao;
@@ -48,32 +49,43 @@ public class CustomerController {
 
 	@SuppressWarnings({ "static-access", "rawtypes" })
 	@RequestMapping(value = "/login",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity checkLoginDetail(@RequestBody Customer customer){
+	public ResponseEntity checkLoginDetail(@RequestBody LoginDto loginDto) throws Exception{
 		Customer ct = null;
-		if((ct = loginDao.checkLoginDetail(customer)) != null)
-			return new ResponseEntity<Customer>(ct,httpStatus.ACCEPTED);
-		else
-			return new ResponseEntity<String>("Not Authorized",httpStatus.UNAUTHORIZED);
+		try{
+			if((ct = loginDao.checkLoginDetail(loginDto)) != null){
+				httpStatus = httpStatus.ACCEPTED;
+			}
+			else{
+				httpStatus = httpStatus.UNAUTHORIZED;
+				ct = new Customer();
+			}
+		}catch(Exception e){
+			httpStatus = httpStatus.EXPECTATION_FAILED;
+			ct = new Customer();
+		}
+		
+		return new ResponseEntity<Customer>(ct,httpStatus);
 	}
 	
 	@SuppressWarnings({ "rawtypes", "static-access" })
 	@RequestMapping(value = "/signup",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity saveSignupDetail(@RequestBody Customer customer) throws Exception{
-		Customer customerObj =  null;
+	public ResponseEntity saveSignupDetail(@RequestBody SignupDto signupDto) throws Exception{
+		SignupDto signupDtoObj =  null;
 		
 		try{
-			if(signupDao.saveCustomer(customer)){
+			if(customerService.saveCustomer(signupDto)){
 				httpStatus = httpStatus.CREATED;
-				customerObj = customer;
+				signupDtoObj = signupDto;
 			}else{
 				httpStatus = httpStatus.EXPECTATION_FAILED;
+				return new ResponseEntity<SignupDto>(signupDto,httpStatus);
 			}
 		}catch(Exception e){
 			httpStatus = HttpStatus.NOT_ACCEPTABLE;
-			customerObj = new Customer();
+			signupDtoObj = new SignupDto();
 		}
 		
-		return new ResponseEntity<Customer>(customerObj,httpStatus);
+		return new ResponseEntity<SignupDto>(signupDtoObj,httpStatus);
 	}
 	
 	@SuppressWarnings({ "rawtypes", "static-access" })
