@@ -46,10 +46,6 @@ public class Item{
 		return picName;
 	}
 
-	public int getId() {
-		return id;
-	}
-
 	public void setPicName(String picName) {
 		this.picName = picName;
 	}

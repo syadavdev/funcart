@@ -37,8 +37,4 @@ public class Cart {
 	public void setItemsList(Set<Item> itemsList) {
 		this.itemsList = itemsList;
 	}
-
-	public int getId() {
-		return id;
-	}
 }*/

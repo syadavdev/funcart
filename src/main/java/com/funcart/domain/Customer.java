@@ -26,10 +26,33 @@ public class Customer{
 	@Column
 	private long phoneNumber;
 	 
+	
+	@Column
+	private String billingAddress;
+	
+	@Column
+	private String shippingAddress; 
+	
 	//getter setter
 	
 	public long getPhoneNumber() {
 		return phoneNumber;
+	}
+
+	public String getBillingAddress() {
+		return billingAddress;
+	}
+
+	public void setBillingAddress(String billingAddress) {
+		this.billingAddress = billingAddress;
+	}
+
+	public String getShippingAddress() {
+		return shippingAddress;
+	}
+
+	public void setShippingAddress(String shippingAddress) {
+		this.shippingAddress = shippingAddress;
 	}
 
 	public void setPhoneNumber(long phoneNumber) {
@@ -58,9 +81,5 @@ public class Customer{
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public int getId() {
-		return id;
 	}
 }

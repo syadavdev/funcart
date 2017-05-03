@@ -1,4 +1,4 @@
-package com.funcart.Dao;
+package com.funcart.dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -7,24 +7,39 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 import com.funcart.domain.Customer;
+import com.funcart.domain.dto.SignupDto;
 
 @Repository
-public class SignUpDao {
+public class SignupDao {
 	
 	@PersistenceContext
 	private EntityManager em;
 	
 	@Transactional(rollbackOn=Exception.class)
-	public boolean saveCustomer(Customer customer)throws Exception{
+	public boolean saveCustomer(SignupDto customerDto)throws Exception{
+		
 		boolean flag = false;
+		
+		Customer customer = new Customer();
+		customer.setUsername(customerDto.getUsername());
+		customer.setEmail(customerDto.getEmail());
+		customer.setPassword(customerDto.getPassword());
+		customer.setPhoneNumber(customerDto.getPhoneNumber());
+		customer.setBillingAddress("");
+		customer.setShippingAddress("");
+		
 		try{
+			
 			if(checkSignupDetail(customer)){
 			
-				int result = em.createNativeQuery("INSERT INTO customer (username, password, email, phoneNumber) VALUES (?, ?, ?, ?)")
+				int result = em.createNativeQuery("INSERT INTO customer (username, password, email, phoneNumber,shippingAddress,billingAddress) "
+								+ "VALUES (?, ?, ?, ?, ?, ?)")
 								.setParameter(1,customer.getUsername())
 								.setParameter(2, customer.getPassword())
 								.setParameter(3, customer.getEmail())
 								.setParameter(4, customer.getPhoneNumber())
+								.setParameter(5, customer.getShippingAddress())
+								.setParameter(6, customer.getShippingAddress())
 								.executeUpdate();
 				
 					if(result > 0)
@@ -37,7 +52,7 @@ public class SignUpDao {
 	}
 	
 	public boolean checkSignupDetail(Customer customer){
-		boolean flag = true;
+		boolean flag = false;
 		if(customer.getEmail().isEmpty() || customer.getPassword().isEmpty() || customer.getUsername().isEmpty() || 
 			Long.toString(customer.getPhoneNumber()).length() != 10){
 				flag = false;
