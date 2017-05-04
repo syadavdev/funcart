@@ -10,14 +10,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-<<<<<<< HEAD:src/main/java/com/funcart/controller/ShippingController.java
-import com.funcart.dao.ShippingDao;
-import com.funcart.dao.service.ShippingService;
-=======
-import com.funcart.Dao.AddressDao;
-import com.funcart.Dao.service.AddressService;
+import com.funcart.dao.AddressDao;
+import com.funcart.dao.service.AddressService;
 
->>>>>>> 3533d470799a8d7f324a1d44b66f8ff657dafe34:src/main/java/com/funcart/controller/AddressController.java
 import com.funcart.domain.Customer;
 import com.funcart.domain.dto.LoginDto;
 import com.funcart.domain.dto.AddressDto;
