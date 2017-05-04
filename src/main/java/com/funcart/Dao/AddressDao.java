@@ -5,16 +5,16 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 import com.funcart.domain.Customer;
-import com.funcart.domain.dto.ShippingDto;
+import com.funcart.domain.dto.AddressDto;
 
 @Repository
-public class ShippingDao {
+public class AddressDao {
 
 	@PersistenceContext
 	private EntityManager em;
 
 	@Transactional(rollbackOn = Exception.class)
-	public boolean saveCustomer(ShippingDto shipDto) throws Exception {
+	public boolean saveCustomer(AddressDto shipDto) throws Exception {
 
 		boolean flag = false;
 
