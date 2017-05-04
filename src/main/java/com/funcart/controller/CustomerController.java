@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.funcart.Dao.ItemsDao;
-import com.funcart.Dao.LoginDao;
-import com.funcart.Dao.service.CustomerService;
+import com.funcart.dao.ItemsDao;
+import com.funcart.dao.LoginDao;
+import com.funcart.dao.service.CustomerService;
 import com.funcart.domain.Customer;
 import com.funcart.domain.Item;
 import com.funcart.domain.dto.LoginDto;

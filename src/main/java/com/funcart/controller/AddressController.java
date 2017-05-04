@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.funcart.Dao.AddressDao;
-import com.funcart.Dao.service.AddressService;
+import com.funcart.dao.AddressDao;
+import com.funcart.dao.service.AddressService;
 
 import com.funcart.domain.Customer;
 import com.funcart.domain.dto.LoginDto;
