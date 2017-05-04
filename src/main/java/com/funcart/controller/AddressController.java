@@ -10,46 +10,52 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+<<<<<<< HEAD:src/main/java/com/funcart/controller/ShippingController.java
 import com.funcart.dao.ShippingDao;
 import com.funcart.dao.service.ShippingService;
+=======
+import com.funcart.Dao.AddressDao;
+import com.funcart.Dao.service.AddressService;
+
+>>>>>>> 3533d470799a8d7f324a1d44b66f8ff657dafe34:src/main/java/com/funcart/controller/AddressController.java
 import com.funcart.domain.Customer;
 import com.funcart.domain.dto.LoginDto;
-import com.funcart.domain.dto.ShippingDto;
+import com.funcart.domain.dto.AddressDto;
 import com.funcart.domain.dto.SignupDto;
 
 @RestController
-public class ShippingController {
+public class AddressController {
 
 	HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
 	@SuppressWarnings("unused")
 	@Autowired
-	private ShippingDao shipDao;
+	private AddressDao shipDao;
 
 	@Autowired
-	private ShippingService shippingService;
+	private AddressService shippingService;
 	
 	@SuppressWarnings({ "rawtypes", "static-access" })
 
-	@RequestMapping(value = "/shipping",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity saveShippingDetail(@RequestBody ShippingDto shippingDto) throws Exception {
-		ShippingDto shippingDtoObj = null;
+	@RequestMapping(value = "/address",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity saveShippingDetail(@RequestBody AddressDto shippingDto) throws Exception {
+		AddressDto shippingDtoObj = null;
 
 		try {
 			if (shippingService.saveCustomer(shippingDto)) {
-				httpStatus = httpStatus.CREATED;
+				httpStatus = httpStatus.OK;
 				shippingDtoObj = shippingDto;
 			} else
 			{
 				httpStatus = httpStatus.EXPECTATION_FAILED;
-				return new ResponseEntity<ShippingDto>(shippingDto, httpStatus);
+				return new ResponseEntity<AddressDto>(shippingDto, httpStatus);
 			}
 		} catch (Exception e) {
 			httpStatus = HttpStatus.NOT_ACCEPTABLE;
-			shippingDtoObj = new ShippingDto();
+			shippingDtoObj = new AddressDto();
 		}
 
-		return new ResponseEntity<ShippingDto>(shippingDtoObj, httpStatus);
+		return new ResponseEntity<AddressDto>(shippingDtoObj, httpStatus);
 	}
 
 }
