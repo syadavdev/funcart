@@ -1,4 +1,4 @@
-package com.funcart.dao;
+package com.funcart.Dao;
 
 import java.util.List;
 

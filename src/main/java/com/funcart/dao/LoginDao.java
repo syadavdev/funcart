@@ -1,4 +1,4 @@
-package com.funcart.dao;
+package com.funcart.Dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,7 +22,7 @@ public class LoginDao {
 		  Customer ct = new Customer();
 		  Query query = null;
 		  
-		  if(loginDto.getPassword() != null && !loginDto.getPassword().isEmpty() && loginDto.getPassword().length() > 8){
+		  if(loginDto.getPassword() != null && !loginDto.getPassword().isEmpty() && loginDto.getPassword().length() >= 8){
 			  if(loginDto.getUsername() != null && !loginDto.getUsername().isEmpty()){
 				  query = em.createQuery("Select o from Customer as o where o.username = ? and o.password = ?")
 						  	.setParameter(0,loginDto.getUsername())
