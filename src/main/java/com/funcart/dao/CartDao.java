@@ -1,4 +1,4 @@
-package com.funcart.dao;
+package com.funcart.Dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

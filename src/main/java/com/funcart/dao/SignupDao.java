@@ -1,4 +1,4 @@
-package com.funcart.dao;
+package com.funcart.Dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -53,7 +53,7 @@ public class SignupDao {
 	
 	public boolean checkSignupDetail(Customer customer){
 		boolean flag = false;
-		if(customer.getEmail().isEmpty() || customer.getPassword().isEmpty() || customer.getUsername().isEmpty() || 
+		if(customer.getEmail().isEmpty() || customer.getPassword().isEmpty() || customer.getPassword().length() < 8 || customer.getUsername().isEmpty() || 
 			Long.toString(customer.getPhoneNumber()).length() != 10){
 				flag = false;
 		}
