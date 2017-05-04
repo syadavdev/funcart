@@ -15,14 +15,15 @@ public class ItemsDao {
 	@PersistenceContext
 	private EntityManager em;
 	
-	public List<Item> getItemsList(){
+	public List<Item> getItemsList() throws Exception{
 		List<Item> itemsList = null;
 		
 		try{
 			itemsList = em.createQuery("select i from Item i",Item.class).getResultList();
 							
 		}catch(Exception e){
-			e.printStackTrace();
+			itemsList = null;
+			throw e;
 		}
 		return itemsList;
 	}

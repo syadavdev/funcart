@@ -15,6 +15,7 @@ public class CartController {
 	@RequestMapping(value = "/kartItems",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public RequestEntity getKartItems(@RequestBody Customer customer){
 		
+		
 		return new RequestEntity<Cart>();
 		
 	}	
@@ -25,4 +26,7 @@ public class CartController {
 	}
 	
 	@RequestMapping(value = "/addKartItems",method=RequestMethod.POST,produces)
+	public RequestEntity addKartItems(@RequestBody Customer customer){
+		
+	}
 }*/

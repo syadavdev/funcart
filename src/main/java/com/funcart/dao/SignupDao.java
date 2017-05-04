@@ -53,8 +53,8 @@ public class SignupDao {
 	
 	public boolean checkSignupDetail(Customer customer){
 		boolean flag = false;
-		if(customer.getEmail().isEmpty() || customer.getPassword().isEmpty() || customer.getUsername().isEmpty() || 
-			Long.toString(customer.getPhoneNumber()).length() != 10){
+		if(customer.getEmail().isEmpty() || customer.getPassword().isEmpty() || customer.getPassword().length() < 8 
+					|| customer.getUsername().isEmpty() || Long.toString(customer.getPhoneNumber()).length() != 10){
 				flag = false;
 		}
 		else{
