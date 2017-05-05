@@ -22,6 +22,14 @@ public class Cart {
 	@Column
 	private Set<Item> itemsList;
 
+	public long getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(long totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
 	public int getTotalItem() {
 		return totalItem;
 	}

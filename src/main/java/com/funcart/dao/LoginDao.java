@@ -6,9 +6,11 @@ import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import com.funcart.domain.Customer;
 import com.funcart.domain.dto.LoginDto;
+import com.funcart.validator.Validator;
 
 @Repository
 public class LoginDao {
@@ -20,24 +22,32 @@ public class LoginDao {
 	public Customer checkLoginDetail(LoginDto loginDto) throws Exception{
 		  
 		  Customer ct = new Customer();
-		  Query query = null;
+		  Query query = null;		  
 		  
-		  if(loginDto.getPassword() != null && !loginDto.getPassword().isEmpty() && loginDto.getPassword().length() >= 8){
-			  if(loginDto.getUsername() != null && !loginDto.getUsername().isEmpty()){
-				  query = em.createQuery("Select o from Customer as o where o.username = ? and o.password = ?")
-						  	.setParameter(0,loginDto.getUsername())
-						  	.setParameter(1,loginDto.getPassword());
+		  if(!StringUtils.isEmpty(loginDto.getPassword()) && 
+				  loginDto.getPassword().length() >= 8 && !StringUtils.isEmpty(loginDto.getName())){
 			  
-			  }else if(loginDto.getEmail() != null && !loginDto.getEmail().isEmpty()){
-				  query = em.createQuery("Select o from Customer as o where o.email = ? and o.password = ?")
-						  	.setParameter(0,loginDto.getEmail())
-						  	.setParameter(1,loginDto.getPassword());
-			  
-			  }else if(Long.toString(loginDto.getPhoneNumber()).length() == 10){
+			  if(Validator.phoneNumberValidate(loginDto.getName())){
+				  
 				  query = em.createQuery("Select o from Customer as o where o.phoneNumber = ? and o.password = ?")
-						  	.setParameter(0,loginDto.getPhoneNumber())
+						  	.setParameter(0,Long.parseLong(loginDto.getName()))
 						  	.setParameter(1,loginDto.getPassword());
+			  }
 			  
+			  else if(Validator.emailValidate(loginDto.getName())){
+				  
+				  query = em.createQuery("Select o from Customer as o where o.email = ? and o.password = ?")
+						  	.setParameter(0,loginDto.getName())
+						  	.setParameter(1,loginDto.getPassword());	  
+				  
+			  }
+			  
+			  else if(Validator.nameValidate(loginDto.getName())){
+				  	
+				  	query = em.createQuery("Select o from Customer as o where o.username = ? and o.password = ?")
+						  	.setParameter(0,loginDto.getName())
+						  	.setParameter(1,loginDto.getPassword());
+				  		
 			  }else{
 				  ct = null;
 			  }
@@ -48,7 +58,7 @@ public class LoginDao {
 		  try{
 			  ct = (Customer) query.getSingleResult();
 		  }catch (Exception e) {
-			  e.printStackTrace();
+			  throw e;
 		  }
 		 return ct;
 	 }

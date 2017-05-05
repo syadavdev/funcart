@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.funcart.dao.ItemsDao;
 import com.funcart.dao.LoginDao;
@@ -35,7 +34,7 @@ public class CustomerController {
 	@Autowired
 	private ItemsDao itemsDao;
 	
-	@RequestMapping(value="/loginPage",method=RequestMethod.GET)
+/*	@RequestMapping(value="/loginPage",method=RequestMethod.GET)
 	public ModelAndView getLoginPage(){
 		ModelAndView mv = new ModelAndView("loginPage");
 		return mv;
@@ -45,10 +44,10 @@ public class CustomerController {
 	public ModelAndView getSignupPage(){
 		ModelAndView mv = new ModelAndView("signupPage");
 		return mv;
-	}
+	}*/
 
 	@SuppressWarnings({ "static-access", "rawtypes" })
-	@RequestMapping(value = "/login",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/login",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity checkLoginDetail(@RequestBody LoginDto loginDto) throws Exception{
 		Customer ct = null;
 		try{
@@ -60,7 +59,7 @@ public class CustomerController {
 				ct = new Customer();
 			}
 		}catch(Exception e){
-			httpStatus = httpStatus.EXPECTATION_FAILED;
+			httpStatus = httpStatus.INTERNAL_SERVER_ERROR;
 			ct = new Customer();
 		}
 		
@@ -81,7 +80,7 @@ public class CustomerController {
 				return new ResponseEntity<SignupDto>(signupDto,httpStatus);
 			}
 		}catch(Exception e){
-			httpStatus = HttpStatus.NOT_ACCEPTABLE;
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			signupDtoObj = new SignupDto();
 		}
 		
@@ -92,10 +91,14 @@ public class CustomerController {
 	@RequestMapping(value="/items",method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity getItems(){
 		List<Item> itemsObj = null;
-		if((itemsObj = itemsDao.getItemsList()).isEmpty())
-			httpStatus = httpStatus.NOT_FOUND;
-		else
-			httpStatus = httpStatus.OK;
+		try{
+			if((itemsObj = itemsDao.getItemsList()).isEmpty())
+				httpStatus = httpStatus.NOT_FOUND;
+			else
+				httpStatus = httpStatus.OK;
+		}catch(Exception e){
+			httpStatus = httpStatus.INTERNAL_SERVER_ERROR;
+		}
 		
 		return new ResponseEntity<List<Item>>(itemsObj,httpStatus);
 	}

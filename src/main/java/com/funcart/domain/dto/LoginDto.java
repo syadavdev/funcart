@@ -2,36 +2,15 @@ package com.funcart.domain.dto;
 
 public class LoginDto {
 	
-	private String username;
-	
+	private String name;
 	private String password;
-	
-	private String email;
-	
-	public String getEmail() {
-		return email;
+
+	public String getName() {
+		return name;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public long getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public void setPhoneNumber(long phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-
-	private long phoneNumber;
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
+	public void setName(String username) {
+		this.name = username;
 	}
 
 	public String getPassword() {
