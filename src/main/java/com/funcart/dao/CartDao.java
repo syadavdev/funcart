@@ -14,4 +14,12 @@ public class CartDao {
 	public void getItems(){
 		
 	}
+	
+	public void addItems(){
+		
+	}
+	
+	public void deleteItems(){
+		
+	}
 }

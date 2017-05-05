@@ -24,7 +24,7 @@ public class Item{
 	private String picName;
 	
 	@Column
-	private String pricePerItem;
+	private String price;
 	
 	public int getItemsId() {
 		return itemId;
@@ -35,11 +35,11 @@ public class Item{
 	}
 
 	public String getPrice() {
-		return pricePerItem;
+		return price;
 	}
 
 	public void setPrice(String price) {
-		this.pricePerItem = price;
+		this.price = price;
 	}
 
 	public String getPicName() {
