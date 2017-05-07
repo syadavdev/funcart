@@ -69,19 +69,16 @@ public class CustomerController {
 	@SuppressWarnings({ "rawtypes", "static-access" })
 	@RequestMapping(value = "/signup",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity saveSignupDetail(@RequestBody SignupDto signupDto) throws Exception{
-		SignupDto signupDtoObj =  null;
-		
+		SignupDto signupDtoObj = null;
 		try{
-			if(customerService.saveCustomer(signupDto)){
+			signupDtoObj = customerService.saveCustomer(signupDto);
+			if(customerService.matching(signupDtoObj, signupDto)){
 				httpStatus = httpStatus.CREATED;
-				signupDtoObj = signupDto;
 			}else{
 				httpStatus = httpStatus.EXPECTATION_FAILED;
-				return new ResponseEntity<SignupDto>(signupDto,httpStatus);
 			}
 		}catch(Exception e){
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-			signupDtoObj = new SignupDto();
 		}
 		
 		return new ResponseEntity<SignupDto>(signupDtoObj,httpStatus);
