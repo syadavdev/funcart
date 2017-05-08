@@ -21,13 +21,16 @@ public class Cart {
 	
 	@Column
 	private Set<Item> itemsList;
+	
+	@Column
+	private double totalprice;
 
-	public long getTotalPrice() {
-		return totalPrice;
+	public double getTotalprice() {
+		return totalprice;
 	}
 
-	public void setTotalPrice(long totalPrice) {
-		this.totalPrice = totalPrice;
+	public void setTotalprice(double totalprice) {
+		this.totalprice = totalprice;
 	}
 
 	public int getTotalItem() {
