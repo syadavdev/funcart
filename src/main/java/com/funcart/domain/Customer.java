@@ -33,8 +33,21 @@ public class Customer{
 	@Column
 	private String shippingAddress; 
 	
-	//getter setter
+	/*@Column
+	private String paymentBy;
 	
+	public String getPaymentBy() {
+		return paymentBy;
+	}
+
+	public void setPaymentBy(String paymentBy) {
+		this.paymentBy = paymentBy;
+	}
+
+	*/
+
+
+
 	public long getPhoneNumber() {
 		return phoneNumber;
 	}

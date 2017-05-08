@@ -19,7 +19,7 @@ public class AddressDao {
 		boolean flag = false;
 
 		Customer customer = new Customer();
-		customer.setUsername(shipDto.getUserName());
+		customer.setEmail(shipDto.getEmail());
 		customer.setBillingAddress(shipDto.getBillingAddress());
 		customer.setShippingAddress(shipDto.getShippingAddress());
 
@@ -30,8 +30,8 @@ public class AddressDao {
 				int result = em
 						.createQuery(
 								"UPDATE Customer SET billingAddress = :billingAddress,shippingAddress = :shippingAddress"
-										+ " where username = :username")
-						.setParameter("username", customer.getUsername())
+										+ " where email = :email")
+						.setParameter("email", customer.getEmail())
 						.setParameter("shippingAddress", customer.getShippingAddress())
 						.setParameter("billingAddress", customer.getBillingAddress()).executeUpdate();
 
