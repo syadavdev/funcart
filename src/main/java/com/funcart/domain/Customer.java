@@ -33,8 +33,41 @@ public class Customer{
 	@Column
 	private String shippingAddress; 
 	
+	@Column
+	private String paymentBy;
+	
+	public String getPaymentBy() {
+		return paymentBy;
+	}
+
+	public void setPaymentBy(String paymentBy) {
+		this.paymentBy = paymentBy;
+	}
+
+	@Column
+	private String card;
+	
+	@Column 
+	private String cash;
+	
 	//getter setter
 	
+	public String getCard() {
+		return card;
+	}
+
+	public void setCard(String card) {
+		this.card = card;
+	}
+
+	public String getCash() {
+		return cash;
+	}
+
+	public void setCash(String cash) {
+		this.cash = cash;
+	}
+
 	public long getPhoneNumber() {
 		return phoneNumber;
 	}
