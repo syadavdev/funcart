@@ -40,14 +40,6 @@ public class LoginDao {
 						  	.setParameter(0,loginDto.getName())
 						  	.setParameter(1,loginDto.getPassword());	  
 				  
-			  }
-			  
-			  else if(Validator.nameValidate(loginDto.getName())){
-				  	
-				  	query = em.createQuery("Select o from Customer as o where o.username = ? and o.password = ?")
-						  	.setParameter(0,loginDto.getName())
-						  	.setParameter(1,loginDto.getPassword());
-				  		
 			  }else{
 				  ct = null;
 			  }
