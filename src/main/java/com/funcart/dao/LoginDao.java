@@ -3,6 +3,7 @@ package com.funcart.dao;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.swing.plaf.synth.SynthSeparatorUI;
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
@@ -18,27 +19,27 @@ public class LoginDao {
 	@PersistenceContext
 	private EntityManager em;
 	
-	@Transactional(rollbackOn=Exception.class)
+	//@Transactional(rollbackOn=Exception.class)
 	public Customer checkLoginDetail(LoginDto loginDto) throws Exception{
 		  
 		  Customer ct = new Customer();
-		  Query query = null;		  
+		  Query query = null;
+		  String hql = "Select o from Customer as o where o.password = ?"; 
 		  
-		  if(!StringUtils.isEmpty(loginDto.getPassword()) && 
-				  loginDto.getPassword().length() >= 8 && !StringUtils.isEmpty(loginDto.getName())){
+		  if(!StringUtils.isEmpty(loginDto.getPassword()) && Validator.passwordValidate(loginDto.getPassword())){
 			  
 			  if(Validator.phoneNumberValidate(loginDto.getName())){
-				  
-				  query = em.createQuery("Select o from Customer as o where o.phoneNumber = ? and o.password = ?")
-						  	.setParameter(0,Long.parseLong(loginDto.getName()))
-						  	.setParameter(1,loginDto.getPassword());
+				  hql = hql + " and o.phoneNumber = ?";
+				  query = em.createQuery(hql)
+						  	.setParameter(0,loginDto.getPassword())
+						  	.setParameter(1,Long.parseLong(loginDto.getName()));
 			  }
 			  
 			  else if(Validator.emailValidate(loginDto.getName())){
-				  
-				  query = em.createQuery("Select o from Customer as o where o.email = ? and o.password = ?")
-						  	.setParameter(0,loginDto.getName())
-						  	.setParameter(1,loginDto.getPassword());	  
+				  hql = hql + " and o.email = ?";
+				  query = em.createQuery(hql)
+						  	.setParameter(0,loginDto.getPassword())
+						  	.setParameter(1,loginDto.getName());	  
 				  
 			  }else{
 				  ct = null;
