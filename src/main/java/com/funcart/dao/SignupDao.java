@@ -112,7 +112,7 @@ public class SignupDao {
 	public boolean alreadyExist(SignupDto signupDto)throws Exception{
 		
 		List<Customer> customers = null;
-		boolean var1 = false,var2 = false,var3 = false,flag = false;
+		boolean var1 = false,var2 = false,flag = false;
 		
 		String already = "Already Exist";
 		signupDtoObj = new SignupDto();
@@ -122,10 +122,9 @@ public class SignupDao {
 		signupDtoObj.setUsername(signupDto.getUsername());
 		
 		try{
-			customers =  em.createQuery("from Customer as o where o.username = ? or o.phoneNumber = ? or o.email = ?")
-			     		   .setParameter(0,signupDto.getUsername())
-						   .setParameter(1, signupDto.getPhoneNumber())
-						   .setParameter(2, signupDto.getEmail())
+			customers =  em.createQuery("from Customer as o where o.phoneNumber = ? or o.email = ?")
+			     		   .setParameter(0, signupDto.getPhoneNumber())
+						   .setParameter(1, signupDto.getEmail())
 						   .getResultList();
 		}catch(Exception e){
 			signupDto.setPhoneNumber(0);
@@ -136,18 +135,16 @@ public class SignupDao {
 		}
 		
 		for(Customer customer :  customers){
-			if(var1 = customer.getUsername().equals(signupDto.getUsername()))
-				signupDtoObj.setUsername(already);
-			if(var2 = customer.getEmail().equals(signupDto.getEmail()))
+			if(var1 = customer.getEmail().equals(signupDto.getEmail()))
 				signupDtoObj.setEmail(already);
 			
 			long l1 = customer.getPhoneNumber();
 			long l2 = signupDto.getPhoneNumber();
-			if(var3 = (l1 == l2))
+			if(var2 = (l1 == l2))
 				signupDtoObj.setPhoneNumber(9000000009L);	
 		}
 		
-		if(var1 || var2 || var3){
+		if(var1 || var2){
 			flag = true;
 			signupDtoObj.setPassword("********");
 		}
