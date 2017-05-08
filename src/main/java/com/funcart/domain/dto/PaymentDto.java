@@ -1,4 +1,4 @@
-package com.funcart.domain.dto;
+/*package com.funcart.domain.dto;
 
 public class PaymentDto {
 
@@ -23,4 +23,4 @@ public class PaymentDto {
 	public void setCard(String card) {
 		this.card = card;
 	}
-}
+}*/

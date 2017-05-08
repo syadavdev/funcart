@@ -33,7 +33,7 @@ public class Customer{
 	@Column
 	private String shippingAddress; 
 	
-	@Column
+	/*@Column
 	private String paymentBy;
 	
 	public String getPaymentBy() {
@@ -66,7 +66,7 @@ public class Customer{
 
 	public void setCash(String cash) {
 		this.cash = cash;
-	}
+	}*/
 
 	public long getPhoneNumber() {
 		return phoneNumber;

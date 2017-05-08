@@ -1,4 +1,4 @@
-package com.funcart.dao;
+/*package com.funcart.dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -49,3 +49,4 @@ public class PaymentDao {
 		return false;
 	}
 }
+*/
