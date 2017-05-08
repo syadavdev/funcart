@@ -44,29 +44,9 @@ public class Customer{
 		this.paymentBy = paymentBy;
 	}
 
-	@Column
-	private String card;
-	
-	@Column 
-	private String cash;
-	
-	//getter setter
-	
-	public String getCard() {
-		return card;
-	}
+	*/
 
-	public void setCard(String card) {
-		this.card = card;
-	}
 
-	public String getCash() {
-		return cash;
-	}
-
-	public void setCash(String cash) {
-		this.cash = cash;
-	}*/
 
 	public long getPhoneNumber() {
 		return phoneNumber;
