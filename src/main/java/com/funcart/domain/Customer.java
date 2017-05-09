@@ -33,7 +33,7 @@ public class Customer{
 	@Column
 	private String shippingAddress; 
 	
-	/*@Column
+	@Column
 	private String paymentBy;
 	
 	public String getPaymentBy() {
@@ -43,8 +43,6 @@ public class Customer{
 	public void setPaymentBy(String paymentBy) {
 		this.paymentBy = paymentBy;
 	}
-
-	*/
 
 
 

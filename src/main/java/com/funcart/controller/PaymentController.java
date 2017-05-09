@@ -1,4 +1,6 @@
-/*package com.funcart.controller;
+package com.funcart.controller;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,51 +12,36 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.funcart.dao.PaymentDao;
-import com.funcart.dao.service.CustomerService;
 import com.funcart.domain.Customer;
-import com.funcart.domain.dto.AddressDto;
-import com.funcart.domain.dto.LoginDto;
+import com.funcart.domain.Item;
 import com.funcart.domain.dto.PaymentDto;
+import com.funcart.domain.dto.SignupDto;
 
 @RestController
 public class PaymentController {
 	
-	
+	HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
 	@Autowired
 	private PaymentDao paymentDao;
-	@Autowired
-	private Customer customer;
 	
-		
-	
-	HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-	
-	
-	
-	
-	@RequestMapping(value="/payment",method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity paymentMode(@RequestBody PaymentDto paymentDto) throws Exception{
-		
-		
-		boolean pt=(Boolean) null;
-	
-		try{
-			if(pt = paymentDao.paymentDetail(paymentDto))
-					{
-				httpStatus = httpStatus.ACCEPTED;
-			}
-			else{
-				//httpStatus = httpStatus.UNAUTHORIZED;
-				pt = new Customer() != null;
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/payment",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity savePayment(@RequestBody PaymentDto paymentDto) throws Exception{
+		PaymentDto payObj=null;
+		try
+		{
+			if(paymentDao.paymentMode(paymentDto))
+			{
+				httpStatus = httpStatus.CREATED;
+			}else{
+				httpStatus = httpStatus.EXPECTATION_FAILED;
 			}
 		}catch(Exception e){
-			httpStatus = httpStatus.INTERNAL_SERVER_ERROR;
-			pt = new Customer() != null;
+			e.printStackTrace();
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		
-		return new ResponseEntity<Customer>(httpStatus);
+		return new ResponseEntity<PaymentDto>(payObj,httpStatus);
+			
 	}
-	
-
 }
-*/
