@@ -46,12 +46,15 @@ public class LoginDao {
 			  ct = null;			  
 		  }
 		  
-		  try{
-			  ct = (Customer) query.getSingleResult();
-		  }catch (Exception e) {
-			  loginDto.setName("Exception Catches in login");
-			  throw e;
+		  if(ct != null){
+			  try{
+				  ct = (Customer) query.getSingleResult();
+			  }catch (Exception e) {
+				  loginDto.setName("Exception Catches in login");
+				  throw e;
+			  }
 		  }
+		  
 		 return ct;
 	 }
 	

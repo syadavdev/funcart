@@ -25,17 +25,17 @@ public class CartController {
 
 	@RequestMapping(value = "/cart",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public RequestEntity getKartItems(@RequestBody CartDto cartDto){
-		
 		try{
 			List<Item> items = cartService.createCart();
+			httpStatus = 
 		}catch(Exception e){
 			http
 		}
 		
 		return RequestEntity<List<Item>>(cartService.CreateCart(),httpstatus);
-	}	*/
+	}	
 	
-	/*@RequestMapping(value = "/deleteCartItems",method=RequestMethod.POST,produces="MediaType.")
+	@RequestMapping(value = "/deleteCartItems",method=RequestMethod.POST,produces="MediaType.")
 	public RequestEntity deleteKartItems(@RequestBody CartDto customer){
 		return new RequestEntity<Cart>();
 	}
@@ -43,5 +43,5 @@ public class CartController {
 	@RequestMapping(value = "/addCartItems",method=RequestMethod.POST,produces)
 	public RequestEntity addKartItems(@RequestBody Customer customer){
 		
-	}*/
-//}
+	}
+}*/

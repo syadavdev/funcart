@@ -1,4 +1,4 @@
-/*package com.funcart.domain.dto;
+package com.funcart.domain.dto;
 
 public class CartDto {
 	
@@ -33,4 +33,3 @@ public class CartDto {
 		this.itemIdToDelete = itemIdToDelete;
 	}
 }
-*/

@@ -1,7 +1,5 @@
 /*package com.funcart.domain;
 
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,35 +15,35 @@ public class Cart {
 	private int id;
 	
 	@Column
-	private int totalItem;
+	private int customerId;
 	
 	@Column
-	private Set<Item> itemsList;
+	private int itemId;
 	
 	@Column
-	private double totalprice;
+	private int quantity;
 
-	public double getTotalprice() {
-		return totalprice;
+	public int getCustomerId() {
+		return customerId;
 	}
 
-	public void setTotalprice(double totalprice) {
-		this.totalprice = totalprice;
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
 	}
 
-	public int getTotalItem() {
-		return totalItem;
+	public int getItemId() {
+		return itemId;
 	}
 
-	public void setTotalItem(int totalItem) {
-		this.totalItem = totalItem;
+	public void setItemId(int itemId) {
+		this.itemId = itemId;
 	}
 
-	public Set<Item> getItemsList() {
-		return itemsList;
+	public int getQuantity() {
+		return quantity;
 	}
 
-	public void setItemsList(Set<Item> itemsList) {
-		this.itemsList = itemsList;
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 }*/
