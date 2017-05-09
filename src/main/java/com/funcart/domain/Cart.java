@@ -23,6 +23,14 @@ public class Cart {
 	@Column
 	private int quantity;
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public int getCustomerId() {
 		return customerId;
 	}

@@ -13,13 +13,19 @@ public class CustomerAddress {
 	
 	@Id	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
-	
+
 	@Column
 	private String shippingAddress;
 	
 	@Column
 	private String billingAddress;
 	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getShippingAddress() {
 		return shippingAddress;
 	}
