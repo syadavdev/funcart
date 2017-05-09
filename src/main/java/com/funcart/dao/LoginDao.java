@@ -3,8 +3,6 @@ package com.funcart.dao;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.swing.plaf.synth.SynthSeparatorUI;
-import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -48,11 +46,15 @@ public class LoginDao {
 			  ct = null;			  
 		  }
 		  
-		  try{
-			  ct = (Customer) query.getSingleResult();
-		  }catch (Exception e) {
-			  throw e;
+		  if(ct != null){
+			  try{
+				  ct = (Customer) query.getSingleResult();
+			  }catch (Exception e) {
+				  loginDto.setName("Exception Catches in login");
+				  throw e;
+			  }
 		  }
+		  
 		 return ct;
 	 }
 	

@@ -43,7 +43,7 @@ public class SignupDao {
 			signupDto.setPhoneNumber(0);
 			signupDto.setEmail(null);
 			signupDto.setPassword(null);
-			signupDto.setUsername(null);
+			signupDto.setUsername("Exception Catches in saving");
 			throw e;
 		}
 		
@@ -130,7 +130,7 @@ public class SignupDao {
 			signupDto.setPhoneNumber(0);
 			signupDto.setEmail(null);
 			signupDto.setPassword(null);
-			signupDto.setUsername(null);
+			signupDto.setUsername("Exception catches in finding Exist");
 			throw e;
 		}
 		

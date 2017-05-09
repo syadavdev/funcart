@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.funcart.dao.ItemsDao;
-import com.funcart.dao.LoginDao;
 import com.funcart.dao.service.CustomerService;
+import com.funcart.dao.service.ItemService;
 import com.funcart.domain.Customer;
 import com.funcart.domain.Item;
 import com.funcart.domain.dto.LoginDto;
@@ -29,10 +28,7 @@ public class CustomerController {
 	private CustomerService customerService;
 	
 	@Autowired
-	private LoginDao loginDao;
-	
-	@Autowired
-	private ItemsDao itemsDao;
+	private ItemService itemService;
 	
 /*	@RequestMapping(value="/loginPage",method=RequestMethod.GET)
 	public ModelAndView getLoginPage(){
@@ -51,16 +47,16 @@ public class CustomerController {
 	public ResponseEntity checkLoginDetail(@RequestBody LoginDto loginDto) throws Exception{
 		Customer ct = null;
 		try{
-			if((ct = loginDao.checkLoginDetail(loginDto)) != null){
+			if((ct = customerService.checkLogin(loginDto)) != null){
 				httpStatus = httpStatus.ACCEPTED;
 			}
 			else{
 				httpStatus = httpStatus.UNAUTHORIZED;
 				ct = new Customer();
+				ct.setUsername("Not Authorized");
 			}
 		}catch(Exception e){
 			httpStatus = httpStatus.INTERNAL_SERVER_ERROR;
-			ct = new Customer();
 		}
 		
 		return new ResponseEntity<Customer>(ct,httpStatus);
@@ -89,7 +85,7 @@ public class CustomerController {
 	public ResponseEntity getItems(){
 		List<Item> itemsObj = null;
 		try{
-			if((itemsObj = itemsDao.getItemsList()).isEmpty())
+			if((itemsObj = itemService.getList()).isEmpty())
 				httpStatus = httpStatus.NOT_FOUND;
 			else
 				httpStatus = httpStatus.OK;
