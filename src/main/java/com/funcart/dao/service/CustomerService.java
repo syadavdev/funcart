@@ -41,7 +41,7 @@ public class CustomerService {
 		
 		return flag;
 	}
-	
+  
 	public Customer checkLogin(LoginDto loginDto) throws Exception{
 		return loginDao.checkLoginDetail(loginDto);
 	}
