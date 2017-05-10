@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import com.funcart.domain.Customer;
+import com.funcart.domain.dto.CustomerDto;
 import com.funcart.domain.dto.LoginDto;
 import com.funcart.validator.Validator;
 
@@ -17,8 +18,11 @@ public class LoginDao {
 	@PersistenceContext
 	private EntityManager em;
 	
+	private CustomerDto customerDto;
+	
 	//@Transactional(rollbackOn=Exception.class)
-	public Customer checkLoginDetail(LoginDto loginDto) throws Exception{
+	public boolean checkLoginDetail(LoginDto loginDto) throws Exception{
+		  boolean flag = false;
 		  Customer customer = new Customer();
 		  Query query = null;
 		  String hql = "Select o from Customer as o where o.password = ?"; 
@@ -49,10 +53,26 @@ public class LoginDao {
 				  loginDto.setName("Exception Catches");
 				  throw e;
 			  }
+			  customerDto = new CustomerDto();
+			  customerDto.setUsername(customer.getUsername());
+			  customerDto.setPassword(customer.getPassword());
+			  customerDto.setEmail(customer.getEmail());
+			  customerDto.setPhoneNumber(customer.getPhoneNumber());
+			  customerDto.setBillingAddress(customer.getBillingAddress());
+			  customerDto.setShippingAddress(customer.getShippingAddress());
+			  
+			  flag = true;
 		  }
-		  
-		 return customer;
+		 return flag;
 	 }
+
+	public CustomerDto getCustomerDto() {
+		return customerDto;
+	}
+
+	public void setCustomerDto(CustomerDto customerDto) {
+		this.customerDto = customerDto;
+	}
 	
 	/*	 public boolean checkingCustomer(Customer customer) {
 	  boolean flag = false;

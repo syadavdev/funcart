@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.funcart.dao.LoginDao;
 import com.funcart.dao.SignupDao;
-import com.funcart.domain.Customer;
+import com.funcart.domain.dto.CustomerDto;
 import com.funcart.domain.dto.LoginDto;
 import com.funcart.domain.dto.SignupDto;
 
@@ -38,11 +38,14 @@ public class CustomerService {
 			flag = true;
 		if(obj1.getUsername() == obj2.getUsername())
 			flag = true;
-		
 		return flag;
 	}
   
-	public Customer checkLogin(LoginDto loginDto) throws Exception{
-		return loginDao.checkLoginDetail(loginDto);
+	public CustomerDto checkLogin(LoginDto loginDto) throws Exception{
+		CustomerDto customerDto = new CustomerDto();
+		if(loginDao.checkLoginDetail(loginDto))
+			customerDto = loginDao.getCustomerDto();
+			
+		return customerDto;
 	}
 }
