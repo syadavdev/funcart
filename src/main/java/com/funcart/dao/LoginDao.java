@@ -2,15 +2,11 @@ package com.funcart.dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
 
 import com.funcart.domain.Customer;
-import com.funcart.domain.dto.CustomerDto;
 import com.funcart.domain.dto.LoginDto;
-import com.funcart.validator.Validator;
 
 @Repository
 public class LoginDao {
@@ -18,60 +14,41 @@ public class LoginDao {
 	@PersistenceContext
 	private EntityManager em;
 	
-	private CustomerDto customerDto;
+	private Customer customer;
 	
 	//@Transactional(rollbackOn=Exception.class)
-	public boolean checkLoginDetail(LoginDto loginDto) throws Exception{
+	public boolean loginByPhone(LoginDto loginDto) throws Exception{
 		  boolean flag = false;
-		  Customer customer = new Customer();
-		  Query query = null;
-		  String hql = "Select o from Customer as o where o.password = ?"; 
-		  
-		  if(!StringUtils.isEmpty(loginDto.getPassword()) && Validator.passwordValidate(loginDto.getPassword())){
-			  
-			  if(Validator.phoneNumberValidate(loginDto.getName())){
-				  hql = hql + " and o.phoneNumber = ?";
-				  query = em.createQuery(hql)
-						  	.setParameter(0,loginDto.getPassword())
-						  	.setParameter(1,Long.parseLong(loginDto.getName()));
-			  }else if(Validator.emailValidate(loginDto.getName())){
-				  hql = hql + " and o.email = ?";
-				  query = em.createQuery(hql)
-						  	.setParameter(0,loginDto.getPassword())
-						  	.setParameter(1,loginDto.getName());	  
-			  }else{
-				  customer.setUsername("Not Valid");
-			  }
-		  }else{
-			  customer.setPassword("Not Valid");
-		  }
-		  
-		  if(!"Not Valid".equals(customer.getPassword()) && !"Not Valid".equals(customer.getUsername())){
-			  try{
-				  customer = (Customer) query.getSingleResult();
-			  }catch (Exception e) {
-				  loginDto.setName("Exception Catches");
-				  throw e;
-			  }
-			  customerDto = new CustomerDto();
-			  customerDto.setUsername(customer.getUsername());
-			  customerDto.setPassword(customer.getPassword());
-			  customerDto.setEmail(customer.getEmail());
-			  customerDto.setPhoneNumber(customer.getPhoneNumber());
-			  customerDto.setBillingAddress(customer.getBillingAddress());
-			  customerDto.setShippingAddress(customer.getShippingAddress());
-			  
+		  customer = null;		  
+		  customer = (Customer) em.createQuery("Select o from Customer as o where o.password = ? and o.phoneNumber = ?")
+				  				.setParameter(0,loginDto.getPassword())
+				  				.setParameter(1,Long.parseLong(loginDto.getName()))
+				  				.getSingleResult(); 
+		  if(customer != null)
 			  flag = true;
-		  }
-		 return flag;
+		  
+		  return flag;
 	 }
-
-	public CustomerDto getCustomerDto() {
-		return customerDto;
+	
+	public boolean loginByEmail(LoginDto loginDto)throws Exception{
+		  boolean flag = false;
+		  customer = null;
+		  customer = (Customer) em.createQuery("Select o from Customer as o where o.password = ? and o.email = ?")
+				  					.setParameter(0,loginDto.getPassword())
+				  					.setParameter(1,loginDto.getName())
+				  					.getSingleResult();
+		  if(customer != null)
+			  flag = true;
+		  
+		  return flag;
+	}
+	
+	public Customer getCustomer() {
+		return customer;
 	}
 
-	public void setCustomerDto(CustomerDto customerDto) {
-		this.customerDto = customerDto;
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 	
 	/*	 public boolean checkingCustomer(Customer customer) {
