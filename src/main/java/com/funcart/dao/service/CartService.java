@@ -1,4 +1,4 @@
-/*package com.funcart.dao.service;
+package com.funcart.dao.service;
 
 import java.util.List;
 
@@ -15,22 +15,22 @@ public class CartService {
 	@Autowired
 	private CartDao cartDao;
 	
-	public List<Item> getCart(String email){
+	public List<Item> getCart(String email) throws Exception{
 		return cartDao.getItems(email);
 	}
 	
-	public List<Item> addAndDelete(CartDto cartDto){
+/*	public List<Item> addAndDelete(CartDto cartDto){
 		List<Item> items = null;
 		
-		if(cartDto.getItemIdToAdd() == 0)
-			if(cartDao.addItems(cartDto))
+		if(cartDto.getItemIdToAdd() > 0)
+			if(cartDao.addItems(cartDto)){
 				items = cartDao.getItems();
 		
-		else if(cartDto.getItemIdToDelete() == 0)
-			if(cartDao.deleteItems())
-				items = cartDao.deleteItems(cartDto);
-		
+		else{
+			if(cartDto.getItemIdToDelete() != 0)
+				if(cartDao.deleteItems())
+					items = cartDao.deleteItems();
+		}
 		return items;
-	}
+	}*/
 }
-*/
