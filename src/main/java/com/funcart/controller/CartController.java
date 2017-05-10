@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.funcart.dao.service.CartService;
-import com.funcart.domain.dto.CartDto;
-import com.funcart.domain.dto.CartItemDto;
+import com.funcart.domain.dto.cart.CartDto;
+import com.funcart.domain.dto.cart.CartItemDto;
 
 @RestController
 public class CartController {
@@ -24,7 +24,7 @@ public class CartController {
 	private CartService cartService;
 
 	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/cart",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getCart",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity getCartItems(@RequestParam String email){
 		CartDto cartDto = new CartDto();
 		try{

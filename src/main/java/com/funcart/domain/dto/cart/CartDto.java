@@ -1,4 +1,4 @@
-package com.funcart.domain.dto;
+package com.funcart.domain.dto.cart;
 
 import java.util.List;
 

@@ -1,6 +1,7 @@
 
 package com.funcart.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.funcart.dao.service.CustomerService;
 import com.funcart.dao.service.ItemService;
-import com.funcart.domain.Customer;
+import com.funcart.domain.dto.CustomerDto;
 import com.funcart.domain.dto.ItemListDto;
 import com.funcart.domain.dto.LoginDto;
 import com.funcart.domain.dto.SignupDto;
@@ -45,22 +46,22 @@ public class CustomerController {
 	@SuppressWarnings({ "static-access", "rawtypes", "null" })
 	@RequestMapping(value = "/login",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity checkLoginDetail(@RequestBody LoginDto loginDto) throws Exception{
-		Customer ct = null;
+		CustomerDto customerDto = null;
 		try{
-			if((ct = customerService.checkLogin(loginDto)) != null){
+			if((customerDto = customerService.checkLogin(loginDto)) != null){
 				httpStatus = httpStatus.ACCEPTED;
 			}
 			else{
 				httpStatus = httpStatus.UNAUTHORIZED;
-				ct.setUsername("Unauthorized");
+				customerDto.setUsername("Unauthorized");
 			}
 		}catch(Exception e){
 			httpStatus = httpStatus.INTERNAL_SERVER_ERROR;
-			ct = new Customer();
-			ct.setUsername("Exception Catches");
+			customerDto = new CustomerDto();
+			customerDto.setUsername("Exception Catches");
 		}
 		
-		return new ResponseEntity<Customer>(ct,httpStatus);
+		return new ResponseEntity<CustomerDto>(customerDto,httpStatus);
 	}
 	
 	@SuppressWarnings({ "rawtypes", "static-access" })
@@ -87,7 +88,7 @@ public class CustomerController {
 	@SuppressWarnings({ "rawtypes", "static-access" })
 	@RequestMapping(value="/items",method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity getItems(){
-		List<ItemListDto> itemListDto = null;
+		List<ItemListDto> itemListDto = new ArrayList<ItemListDto>();
 		try{
 			if((itemListDto = itemService.getList()).isEmpty())
 				httpStatus = httpStatus.NOT_FOUND;
@@ -96,7 +97,6 @@ public class CustomerController {
 		}catch(Exception e){
 			httpStatus = httpStatus.INTERNAL_SERVER_ERROR;
 		}
-		
 		return new ResponseEntity<List<ItemListDto>>(itemListDto,httpStatus);
 	}
 }

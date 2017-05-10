@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.funcart.dao.CartDao;
-import com.funcart.domain.dto.CartDto;
+import com.funcart.domain.dto.cart.CartDto;
 
 @Service
 public class CartService {

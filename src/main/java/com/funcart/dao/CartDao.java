@@ -6,14 +6,13 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import org.springframework.stereotype.Repository;
 
 import com.funcart.domain.Cart;
 import com.funcart.domain.Item;
-import com.funcart.domain.dto.CartDto;
-import com.funcart.domain.dto.CartItemDto;
+import com.funcart.domain.dto.cart.CartDto;
+import com.funcart.domain.dto.cart.CartItemDto;
 import com.funcart.validator.Validator;
 
 @Repository
