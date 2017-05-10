@@ -25,21 +25,29 @@ public class Item{
 	
 	@Column
 	private String price;
-	
-	public int getItemsId() {
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getItemId() {
 		return itemId;
 	}
 
-	public void setItemsId(int itemsId) {
-		this.itemId = itemsId;
+	public void setItemId(int itemId) {
+		this.itemId = itemId;
 	}
 
-	public String getPrice() {
-		return price;
+	public String getName() {
+		return name;
 	}
 
-	public void setPrice(String price) {
-		this.price = price;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getPicName() {
@@ -50,7 +58,11 @@ public class Item{
 		this.picName = picName;
 	}
 
-	public String getName() {
-		return name;
+	public String getPrice() {
+		return price;
+	}
+
+	public void setPrice(String price) {
+		this.price = price;
 	}
 }

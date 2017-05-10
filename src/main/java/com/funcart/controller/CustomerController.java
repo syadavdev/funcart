@@ -42,7 +42,7 @@ public class CustomerController {
 		return mv;
 	}*/
 
-	@SuppressWarnings({ "static-access", "rawtypes" })
+	@SuppressWarnings({ "static-access", "rawtypes", "null" })
 	@RequestMapping(value = "/login",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity checkLoginDetail(@RequestBody LoginDto loginDto) throws Exception{
 		Customer ct = null;
@@ -52,11 +52,12 @@ public class CustomerController {
 			}
 			else{
 				httpStatus = httpStatus.UNAUTHORIZED;
-				ct = new Customer();
-				ct.setUsername("Not Authorized");
+				ct.setUsername("Unauthorized");
 			}
 		}catch(Exception e){
 			httpStatus = httpStatus.INTERNAL_SERVER_ERROR;
+			ct = new Customer();
+			ct.setUsername("Exception Catches");
 		}
 		
 		return new ResponseEntity<Customer>(ct,httpStatus);
@@ -65,16 +66,19 @@ public class CustomerController {
 	@SuppressWarnings({ "rawtypes", "static-access" })
 	@RequestMapping(value = "/signup",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity saveSignupDetail(@RequestBody SignupDto signupDto) throws Exception{
-		SignupDto signupDtoObj = null;
+		SignupDto signupDtoObj = new SignupDto();
+		signupDto.setUsername("Not Saved");
 		try{
 			signupDtoObj = customerService.saveCustomer(signupDto);
 			if(customerService.matching(signupDtoObj, signupDto)){
 				httpStatus = httpStatus.CREATED;
 			}else{
 				httpStatus = httpStatus.EXPECTATION_FAILED;
+				signupDtoObj.setUsername("Exception Failed");
 			}
 		}catch(Exception e){
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			signupDtoObj.setUsername("Exception Catches");
 		}
 		
 		return new ResponseEntity<SignupDto>(signupDtoObj,httpStatus);

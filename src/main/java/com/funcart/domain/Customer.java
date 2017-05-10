@@ -44,8 +44,21 @@ public class Customer{
 		this.paymentBy = paymentBy;
 	}
 
+<<<<<<< HEAD
 
 
+=======
+	*/
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+>>>>>>> b6dd66212554c9388e3886113e0a0d2362542be5
 	public long getPhoneNumber() {
 		return phoneNumber;
 	}

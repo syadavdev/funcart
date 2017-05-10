@@ -19,8 +19,7 @@ public class LoginDao {
 	
 	//@Transactional(rollbackOn=Exception.class)
 	public Customer checkLoginDetail(LoginDto loginDto) throws Exception{
-		  
-		  Customer ct = new Customer();
+		  Customer customer = new Customer();
 		  Query query = null;
 		  String hql = "Select o from Customer as o where o.password = ?"; 
 		  
@@ -31,31 +30,28 @@ public class LoginDao {
 				  query = em.createQuery(hql)
 						  	.setParameter(0,loginDto.getPassword())
 						  	.setParameter(1,Long.parseLong(loginDto.getName()));
-			  }
-			  
-			  else if(Validator.emailValidate(loginDto.getName())){
+			  }else if(Validator.emailValidate(loginDto.getName())){
 				  hql = hql + " and o.email = ?";
 				  query = em.createQuery(hql)
 						  	.setParameter(0,loginDto.getPassword())
 						  	.setParameter(1,loginDto.getName());	  
-				  
 			  }else{
-				  ct = null;
+				  customer.setUsername("Not Valid");
 			  }
 		  }else{
-			  ct = null;			  
+			  customer.setPassword("Not Valid");
 		  }
 		  
-		  if(ct != null){
+		  if(!"Not Valid".equals(customer.getPassword()) && !"Not Valid".equals(customer.getUsername())){
 			  try{
-				  ct = (Customer) query.getSingleResult();
+				  customer = (Customer) query.getSingleResult();
 			  }catch (Exception e) {
-				  loginDto.setName("Exception Catches in login");
+				  loginDto.setName("Exception Catches");
 				  throw e;
 			  }
 		  }
 		  
-		 return ct;
+		 return customer;
 	 }
 	
 	/*	 public boolean checkingCustomer(Customer customer) {
