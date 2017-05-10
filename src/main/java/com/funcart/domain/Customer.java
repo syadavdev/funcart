@@ -39,16 +39,10 @@ public class Customer{
 	public String getPaymentBy() {
 		return paymentBy;
 	}
-
 	public void setPaymentBy(String paymentBy) {
 		this.paymentBy = paymentBy;
 	}
-
-<<<<<<< HEAD
-
-
-=======
-	*/
+	
 	
 	public int getId() {
 		return id;
@@ -58,7 +52,6 @@ public class Customer{
 		this.id = id;
 	}
 	
->>>>>>> b6dd66212554c9388e3886113e0a0d2362542be5
 	public long getPhoneNumber() {
 		return phoneNumber;
 	}
