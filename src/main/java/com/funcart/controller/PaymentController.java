@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.funcart.dao.PaymentDao;
+import com.funcart.dao.service.PaymentService;
 import com.funcart.domain.Customer;
 import com.funcart.domain.Item;
+import com.funcart.domain.dto.AddressDto;
 import com.funcart.domain.dto.PaymentDto;
 import com.funcart.domain.dto.SignupDto;
 
@@ -25,23 +27,31 @@ public class PaymentController {
 	@Autowired
 	private PaymentDao paymentDao;
 	
-	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/payment",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity savePayment(@RequestBody PaymentDto paymentDto) throws Exception{
-		PaymentDto payObj=null;
-		try
+	@Autowired
+	private PaymentService paymentService;
+	
+@SuppressWarnings({ "rawtypes", "static-access" })
+
+@RequestMapping(value = "/payment",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
+public ResponseEntity savePayment(@RequestBody PaymentDto paymentDto)throws Exception{
+	PaymentDto payObj = null;
+
+	try {
+		
+		if (paymentService.paymentMode(paymentDto)) {
+			httpStatus = httpStatus.OK;
+			payObj = paymentDto;
+		} else
 		{
-			if(paymentDao.paymentMode(paymentDto))
-			{
-				httpStatus = httpStatus.CREATED;
-			}else{
-				httpStatus = httpStatus.EXPECTATION_FAILED;
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			httpStatus = httpStatus.EXPECTATION_FAILED;
+			return new ResponseEntity<PaymentDto>(paymentDto, httpStatus);
 		}
-		return new ResponseEntity<PaymentDto>(payObj,httpStatus);
-			
+	} catch (Exception e) {
+		httpStatus = HttpStatus.NOT_ACCEPTABLE;
+		payObj = new PaymentDto();
 	}
+
+	return new ResponseEntity<PaymentDto>(payObj, httpStatus);
+}
+
 }

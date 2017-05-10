@@ -3,6 +3,8 @@ package com.funcart.domain.dto;
 public class PaymentDto {
 	
 	private String paymentBy;
+	 
+	
 	
 	public String getPaymentBy() {
 		return paymentBy;
@@ -11,4 +13,5 @@ public class PaymentDto {
 		this.paymentBy = paymentBy;
 	
 	}
+	
 }
