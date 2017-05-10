@@ -38,7 +38,6 @@ public class CustomerService {
 			flag = true;
 		if(obj1.getUsername() == obj2.getUsername())
 			flag = true;
-		
 		return flag;
 	}
   

@@ -1,12 +1,9 @@
 package com.funcart.dao.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.funcart.dao.CartDao;
-import com.funcart.domain.Item;
 import com.funcart.domain.dto.CartDto;
 
 @Service
@@ -15,7 +12,7 @@ public class CartService {
 	@Autowired
 	private CartDao cartDao;
 	
-	public List<Item> getCart(String email) throws Exception{
+	public CartDto getCart(String email) throws Exception{	
 		return cartDao.getItems(email);
 	}
 	

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.funcart.dao.ItemsDao;
-import com.funcart.domain.Item;
+import com.funcart.domain.dto.ItemListDto;
 
 @Service
 public class ItemService {
@@ -14,7 +14,10 @@ public class ItemService {
 	@Autowired
 	private ItemsDao itemsDao;
 
-	public List<Item> getList()throws Exception{
-		return itemsDao.getItemsList();
+	public List<ItemListDto> getList()throws Exception{
+		List<ItemListDto> itemDto = null;
+		if(itemsDao.getItemsList())
+			itemDto = itemsDao.getItemListDto();
+		return itemDto;
 	}
 }

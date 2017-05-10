@@ -1,7 +1,6 @@
 package com.funcart.controller;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.funcart.dao.service.CartService;
-import com.funcart.domain.Item;
+import com.funcart.domain.dto.CartDto;
+import com.funcart.domain.dto.CartItemDto;
 
 @RestController
 public class CartController {
@@ -26,33 +26,36 @@ public class CartController {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/cart",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity getCartItems(@RequestParam String email){
-		List<Item> items = null;
+		CartDto cartDto = new CartDto();
 		try{
-			items = cartService.getCart(email);
-			if(items != null)
+			cartDto = cartService.getCart(email);
+			if(!cartDto.getItemDtoList().isEmpty())
 				httpStatus = HttpStatus.OK;
 			else{
 				httpStatus = HttpStatus.NOT_FOUND;
-				items = new ArrayList<Item>();
 			}
 		}catch(Exception e){
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-			items = new ArrayList<Item>();
+			cartDto.setEmail(email);
+			cartDto.setItemDtoList(new ArrayList<CartItemDto>());
 		}
 		
-		return new ResponseEntity<List<Item>>(items,httpStatus);
+		return new ResponseEntity<CartDto>(cartDto,httpStatus);
 	}	
 	
-	/*@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/addAndDeleteCartItems",method=RequestMethod.PUT,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity deleteCartItems(@RequestBody CartDto cartDto){
-		List<Item> items = null;
+/*	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/deleteCartItem",method=RequestMethod.PUT,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity deleteToCart(@RequestBody AddDeleteItemDto addAndDeleteItem){
+		CartDto cartDto = new CartDto();
 		try{
-			items = cartService.addAndDelete(cartDto);
+			cartDto() = cartService.addAndDelete(addAndDelete);
 			httpStatus = HttpStatus.OK;
 		}catch(Exception e){
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<List<Item>>(items,httpStatus);
-	}*/
+	}
+	
+	@RequestMapping(value = "/addCartItem",method=RequestMethod.PUT,produces=MediaType.APPLICATION_JSON_VALUE,consume, )
+	public ResponseEntity addToCart(@ResponseBody AddDeleteItemDto addAndDelete)*/
 }

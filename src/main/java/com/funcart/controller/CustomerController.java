@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.funcart.dao.service.CustomerService;
 import com.funcart.dao.service.ItemService;
 import com.funcart.domain.Customer;
-import com.funcart.domain.Item;
+import com.funcart.domain.dto.ItemListDto;
 import com.funcart.domain.dto.LoginDto;
 import com.funcart.domain.dto.SignupDto;
 
@@ -67,7 +67,7 @@ public class CustomerController {
 	@RequestMapping(value = "/signup",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity saveSignupDetail(@RequestBody SignupDto signupDto) throws Exception{
 		SignupDto signupDtoObj = new SignupDto();
-		signupDto.setUsername("Not Saved");
+		signupDtoObj.setUsername("Not Saved");
 		try{
 			signupDtoObj = customerService.saveCustomer(signupDto);
 			if(customerService.matching(signupDtoObj, signupDto)){
@@ -87,9 +87,9 @@ public class CustomerController {
 	@SuppressWarnings({ "rawtypes", "static-access" })
 	@RequestMapping(value="/items",method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity getItems(){
-		List<Item> itemsObj = null;
+		List<ItemListDto> itemListDto = null;
 		try{
-			if((itemsObj = itemService.getList()).isEmpty())
+			if((itemListDto = itemService.getList()).isEmpty())
 				httpStatus = httpStatus.NOT_FOUND;
 			else
 				httpStatus = httpStatus.OK;
@@ -97,6 +97,6 @@ public class CustomerController {
 			httpStatus = httpStatus.INTERNAL_SERVER_ERROR;
 		}
 		
-		return new ResponseEntity<List<Item>>(itemsObj,httpStatus);
+		return new ResponseEntity<List<ItemListDto>>(itemListDto,httpStatus);
 	}
 }
