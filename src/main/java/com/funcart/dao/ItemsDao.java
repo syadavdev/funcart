@@ -9,20 +9,20 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 import com.funcart.domain.Item;
-import com.funcart.domain.dto.ItemListDto;
+import com.funcart.domain.dto.ItemDto;
 
 @Repository
 public class ItemsDao {
 	
 	@PersistenceContext
 	private EntityManager em;
-	private List<ItemListDto> itemListDto;
+	private List<ItemDto> itemListDto;
 
 	public boolean getItemsList() throws Exception{
 		
 		boolean flag = true;
 		List<Item> itemsList = null;
-		itemListDto = new ArrayList<ItemListDto>();
+		itemListDto = new ArrayList<ItemDto>();
 		
 		try{
 			itemsList = em.createQuery("select i from Item i",Item.class).getResultList();				
@@ -32,9 +32,9 @@ public class ItemsDao {
 		}
 		
 		if(!itemsList.isEmpty() && itemsList != null){
-			ItemListDto itemDto = null;
+			ItemDto itemDto = null;
 			for(Item item: itemsList){
-				itemDto = new ItemListDto();
+				itemDto = new ItemDto();
 				itemDto.setItemId(item.getItemId());
 				itemDto.setName(item.getName());
 				itemDto.setPicName(item.getPicName());
@@ -50,10 +50,10 @@ public class ItemsDao {
 		return flag;
 	}
 	
-	public List<ItemListDto> getItemListDto() {
+	public List<ItemDto> getItemListDto() {
 		return itemListDto;
 	}
-	public void setItemListDto(List<ItemListDto> itemListDto) {
+	public void setItemListDto(List<ItemDto> itemListDto) {
 		this.itemListDto = itemListDto;
 	}
 }

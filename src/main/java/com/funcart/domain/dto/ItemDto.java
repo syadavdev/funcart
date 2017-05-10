@@ -1,6 +1,6 @@
 package com.funcart.domain.dto;
 
-public class ItemListDto {
+public class ItemDto {
 
 	private int itemId;
 	private String name;
