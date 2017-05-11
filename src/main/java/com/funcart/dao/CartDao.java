@@ -11,7 +11,8 @@ import org.springframework.stereotype.Repository;
 
 import com.funcart.domain.Cart;
 import com.funcart.domain.Item;
-import com.funcart.domain.dto.CartDto;
+import com.funcart.domain.dto.cart.CartDto;
+import com.funcart.domain.dto.cart.CartItemDto;
 import com.funcart.validator.Validator;
 
 @Repository
@@ -23,19 +24,22 @@ public class CartDao {
 	private Query query;
 	private int customerId;
 	private List<Cart> cartList;
-	List<Item> items;
+	private List<CartItemDto> itemDtoList;
+	private CartDto cartDto;
 
-	public List<Item> getItems(String email)throws Exception{
-		query = null;
+	public CartDto getItems(String email)throws Exception{
+		cartDto = new CartDto();
+		cartDto.setEmail(email);
 		if(getCustomer(email) && getCartList() && getItemList()){
+			cartDto.setItemDtoList(itemDtoList);
 		}	
 		else{
-			items = new ArrayList<Item>();
+			cartDto.setItemDtoList(new ArrayList<CartItemDto>());
 		}
-		return items;
+		return cartDto;
 	}
 	
-	public boolean addItems(CartDto cartDto)throws Exception{
+	public boolean addItems()throws Exception{
 		boolean flag = false;
 		
 		return flag;
@@ -91,11 +95,12 @@ public class CartDao {
 	
 	public boolean getItemList()throws Exception{
 		boolean flag = false;
-		Item item = null;
-		items = new ArrayList<Item>();
+		itemDtoList = new ArrayList<CartItemDto>();
 		query = null;
 		if(!cartList.isEmpty()){
+			Item item = null;
 			for(Cart cart: cartList){
+				CartItemDto itemDto = new CartItemDto();
 				try{
 					item = (Item) em.createQuery("Select i From Item i where i.itemId = ?")
 							 		.setParameter(0, cart.getItemId())
@@ -104,11 +109,17 @@ public class CartDao {
 					flag = false;
 					e.printStackTrace();
 				}
-				items.add(item);
+				
+				itemDto.setItemName(item.getName());
+				itemDto.setItemPicName(item.getPicName());
+				itemDto.setItemId(item.getItemId());
+				itemDto.setItemTotalPrice(item.getPrice() * cart.getQuantity());
+				itemDto.setItemQty(cart.getQuantity());
+				
+				itemDtoList.add(itemDto);
 			}
 			flag = true;
-		}	
-		
+		}
 		return flag;
 	}
 }
