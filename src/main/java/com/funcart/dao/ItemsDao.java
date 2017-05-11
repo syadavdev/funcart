@@ -1,6 +1,5 @@
 package com.funcart.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -9,51 +8,31 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 import com.funcart.domain.Item;
-import com.funcart.domain.dto.ItemDto;
 
 @Repository
 public class ItemsDao {
 	
 	@PersistenceContext
 	private EntityManager em;
-	private List<ItemDto> itemListDto;
+	
+	private List<Item> itemList;
 
-	public boolean getItemsList() throws Exception{
+	public boolean getItems() throws Exception{
+		boolean flag = false;
+		itemList = null;
 		
-		boolean flag = true;
-		List<Item> itemsList = null;
-		itemListDto = new ArrayList<ItemDto>();
+		itemList = em.createQuery("select i from Item i",Item.class).getResultList();
 		
-		try{
-			itemsList = em.createQuery("select i from Item i",Item.class).getResultList();				
-		}catch(Exception e){
-			itemsList = null;
-			throw e;
-		}
-		
-		if(!itemsList.isEmpty() && itemsList != null){
-			ItemDto itemDto = null;
-			for(Item item: itemsList){
-				itemDto = new ItemDto();
-				itemDto.setItemId(item.getItemId());
-				itemDto.setName(item.getName());
-				itemDto.setPicName(item.getPicName());
-				itemDto.setPrice(item.getPrice());
-				try{
-					itemListDto.add(itemDto);
-				}catch(Exception e){
-					e.printStackTrace();
-				}
-			}	
+		if(!itemList.isEmpty() && itemList != null)
 			flag = true;
-		}	
+		
 		return flag;
 	}
 	
-	public List<ItemDto> getItemListDto() {
-		return itemListDto;
+	public List<Item> getItemList() {
+		return itemList;
 	}
-	public void setItemListDto(List<ItemDto> itemListDto) {
-		this.itemListDto = itemListDto;
+	public void setItemList(List<Item> itemList) {
+		this.itemList = itemList;
 	}
 }
