@@ -1,4 +1,4 @@
-package com.funcart.dao.service;
+/*package com.funcart.dao.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,3 +21,4 @@ public class PaymentService {
 			return false;
 	}
 }
+*/
