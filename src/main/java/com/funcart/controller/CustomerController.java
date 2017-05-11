@@ -1,9 +1,6 @@
 
 package com.funcart.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,12 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.funcart.dao.service.ItemService;
 import com.funcart.dao.service.LoginService;
 import com.funcart.dao.service.SignupService;
 import com.funcart.domain.dto.CustomerDto;
 import com.funcart.domain.dto.ErrorResponse;
-import com.funcart.domain.dto.ItemDto;
 import com.funcart.domain.dto.LoginDto;
 import com.funcart.domain.dto.SignupDto;
 import com.funcart.validator.Validator;
