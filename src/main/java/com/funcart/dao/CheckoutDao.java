@@ -37,13 +37,12 @@ public class CheckoutDao {
 
 	
 				int result = em
-						.createQuery("INSERT INTO 'checkout'(customerId,customerName)"
-								+ "SELECT username FROM customer"
-								+ "where email = :email")
+						.createQuery("INSERT INTO Checkout(customerId,customerName)"
+								+"Select o.id,o.username From Customer as o where o.email =:email")
 						
 						.setParameter("email", customer.getEmail())
-						.setParameter("customerId", checkout.getCustomerId())
-						.setParameter("customerName", checkout.getCustomerName())
+						//.setParameter("customerId", checkout.getCustomerId())
+						//.setParameter("customerName", checkout.getCustomerName())
 				
 				.executeUpdate();
 						
