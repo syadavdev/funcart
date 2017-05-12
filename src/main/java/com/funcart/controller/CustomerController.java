@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.funcart.dao.service.LoginService;
 import com.funcart.dao.service.SignupService;
 import com.funcart.domain.dto.CustomerDto;
-import com.funcart.domain.dto.ErrorResponse;
 import com.funcart.domain.dto.LoginDto;
 import com.funcart.domain.dto.SignupDto;
+import com.funcart.domain.dto.error.ErrorResponse;
 import com.funcart.validator.Validator;
 
 @RestController
@@ -74,15 +74,15 @@ public class CustomerController {
 				|| StringUtils.isEmpty(signupDto.getUsername()) || signupDto.getPhoneNumber() == 0L)
 			return new ResponseEntity<ErrorResponse>(new ErrorResponse(400, "Empty field"), httpStatus);
 		
-		if(signupService.checkSignupDetail(signupDto))
-			return new ResponseEntity<ErrorResponse>(new ErrorResponse(400, signupService.getStr()), httpStatus);
+		if(!signupService.checkSignupDetail(signupDto))
+			return new ResponseEntity<ErrorResponse>(new ErrorResponse(400, signupService.getErrorStr()), httpStatus);
 
 		try{
 			if(signupService.saveCustomer(signupDto)){
 				httpStatus = httpStatus.CREATED;
 			}else{
 				httpStatus = httpStatus.EXPECTATION_FAILED;
-				return new ResponseEntity<ErrorResponse>(new ErrorResponse(417,signupService.getStr()), httpStatus);
+				return new ResponseEntity<ErrorResponse>(new ErrorResponse(417,signupService.getErrorStr()), httpStatus);
 			}
 		}catch(Exception e){
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;

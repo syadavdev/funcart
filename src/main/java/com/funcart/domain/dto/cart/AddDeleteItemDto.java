@@ -1,22 +1,15 @@
-package com.funcart.domain.dto;
+package com.funcart.domain.dto.cart;
 
 public class AddDeleteItemDto {
 	
 	private String email;
-	private int addItemId;
-	private int deleteItemId;
+	private int ItemId;
 	
-	public int getAddItemId() {
-		return addItemId;
+	public int getItemId() {
+		return ItemId;
 	}
-	public void setAddItemId(int addItemId) {
-		this.addItemId = addItemId;
-	}
-	public int getDeleteItemId() {
-		return deleteItemId;
-	}
-	public void setDeleteItemId(int deleteItemId) {
-		this.deleteItemId = deleteItemId;
+	public void setItemId(int itemId) {
+		ItemId = itemId;
 	}
 	public String getEmail() {
 		return email;
