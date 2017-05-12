@@ -1,125 +1,75 @@
 package com.funcart.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.transaction.Transactional;
+import javax.transaction.Transactional.TxType;
 
 import org.springframework.stereotype.Repository;
 
 import com.funcart.domain.Cart;
 import com.funcart.domain.Item;
-import com.funcart.domain.dto.cart.CartDto;
-import com.funcart.domain.dto.cart.CartItemDto;
-import com.funcart.validator.Validator;
 
 @Repository
 public class CartDao {
 	
 	@PersistenceContext
 	private EntityManager em;
-	
-	private Query query;
-	private int customerId;
-	private List<Cart> cartList;
-	private List<CartItemDto> itemDtoList;
-	private CartDto cartDto;
 
-	public CartDto getItems(String email)throws Exception{
-		cartDto = new CartDto();
-		cartDto.setEmail(email);
-		if(getCustomer(email) && getCartList() && getItemList()){
-			cartDto.setItemDtoList(itemDtoList);
-		}	
-		else{
-			cartDto.setItemDtoList(new ArrayList<CartItemDto>());
-		}
-		return cartDto;
-	}
-	
-	public boolean addItems()throws Exception{
+	public boolean addItems(int customerId,int itemId)throws Exception{
 		boolean flag = false;
-		
+		int check = em.createQuery("Insert Into Cart(customerId,itemId,quantity) Values(?,?,?)")
+					  .setParameter(0, customerId)
+					  .setParameter(1, itemId)
+					  .executeUpdate();
+		if(check > 0)
+			flag = true;		
 		return flag;
 	}
 	
-	public boolean deleteItems()throws Exception{
+	@Transactional(value=TxType.REQUIRED, rollbackOn={Exception.class})
+	public boolean deleteItems(Integer itemId,Integer customerId)throws Exception{
 		boolean flag = false;
+		int check = 0;
+		try{
+			check = em.createQuery("Delete From Cart as cart Where cart.itemId = ? And cart.customerId = ?")
+					  .setParameter(0, itemId)
+					  .setParameter(1, customerId)
+					  .executeUpdate();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		
+		if(check > 0)
+			flag = true;		
 		return flag;
 	}
 	
-	public boolean getCustomer(String email)throws Exception{
-		
-		customerId = 0;
-		query = null;
-		boolean flag = false;
-			  
-		if(Validator.emailValidate(email)){
-			query = em.createQuery("Select id From Customer as o where o.email = ?")
-			   		  .setParameter(0,email);
-			flag = true;
-		}
-		if(flag){
-		  try{
-			  customerId = (Integer) query.getSingleResult();
-	  		}catch (Exception e) {
-		  		flag = false;
-		  	}
-		}
-		return flag;
+	public int getCustomer(String email)throws Exception{
+		int id = 0;
+		id = (Integer) em.createQuery("Select id From Customer as o where o.email = ?")
+		   		  		 .setParameter(0,email)
+		   		  		 .getSingleResult();
+		return id;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public boolean getCartList()throws Exception{
-		boolean flag = false;
-		cartList = null;
-		query = null;
-		if(customerId > 0){
-			query = em.createQuery("Select c From Cart as c where c.customerId = ?")
-					  .setParameter(0, new Integer(customerId));
-			flag = true;
-		}
-		if(flag){
-			try{
-				cartList = (List<Cart>) query.getResultList();
-			}catch(Exception e){
-				flag = false;
-				throw e;
-			}
-		}
-		return flag;
+	public List<Cart> getCartList(int customerId)throws Exception{
+		List<Cart> cartList = null;
+		
+		cartList = (List<Cart>)em.createQuery("Select c From Cart as c where c.customerId = ?")
+					  			 .setParameter(0, new Integer(customerId))
+					  			 .getResultList();
+		return cartList;
 	}
 	
-	public boolean getItemList()throws Exception{
-		boolean flag = false;
-		itemDtoList = new ArrayList<CartItemDto>();
-		query = null;
-		if(!cartList.isEmpty()){
-			Item item = null;
-			for(Cart cart: cartList){
-				CartItemDto itemDto = new CartItemDto();
-				try{
-					item = (Item) em.createQuery("Select i From Item i where i.itemId = ?")
-							 		.setParameter(0, cart.getItemId())
-							 		.getSingleResult();
-				}catch(Exception e){
-					flag = false;
-					e.printStackTrace();
-				}
-				
-				itemDto.setItemName(item.getName());
-				itemDto.setItemPicName(item.getPicName());
-				itemDto.setItemId(item.getItemId());
-				itemDto.setItemTotalPrice(item.getPrice() * cart.getQuantity());
-				itemDto.setItemQty(cart.getQuantity());
-				
-				itemDtoList.add(itemDto);
-			}
-			flag = true;
-		}
-		return flag;
+	public Item getItem(int cartId)throws Exception{
+		Item item = null;
+		item = (Item) em.createQuery("Select i From Item i where i.itemId = ?")
+				 		.setParameter(0, cartId)
+				 		.getSingleResult();
+		return item;
 	}
 }

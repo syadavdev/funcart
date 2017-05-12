@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.funcart.dao.service.ItemService;
-import com.funcart.domain.dto.ErrorResponse;
 import com.funcart.domain.dto.ItemDto;
+import com.funcart.domain.dto.error.ErrorResponse;
 
 @RestController
 public class ItemController {
