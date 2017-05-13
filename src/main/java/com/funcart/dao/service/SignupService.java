@@ -47,25 +47,31 @@ public class SignupService {
 		flag[3] = 
 				Validator.phoneNumberValidate(Long.toString(signupDto.getPhoneNumber())) ? true : false;
 		
-		if(!flag[0])
-			str = str + "#Username Invalid#";
-		if(!flag[1])
-			str = str + "#Email Invalid#";
-		if(!flag[2])
-			str = str + "#Password Invalid#";
-		if(!flag[3])
-			str = str + "#PhoneNumber Invalid#";
+		if(!flag[0]){
+			str = str + "Username-Invalid ";
+		}
+		if(!flag[1]){
+			str = str + "Email-Invalid ";
+		}
+		if(!flag[2]){
+			str = str + "Password-Invalid ";
+		}
+		if(!flag[3]){
+			str = str + "PhoneNumber-Invalid ";
+		}
 		
-		if(!str.isEmpty())
+		if(str.isEmpty())
 			check = true;
+		else
+			setErrorStr(str);
 		
 		return check;
 	}
 
-	public String getStr() {
+	public String getErrorStr() {
 		return errorStr;
 	}
-	public void setStr(String str) {
+	public void setErrorStr(String str) {
 		this.errorStr = str;
 	}
 	public SignupDto getSignupDto() {

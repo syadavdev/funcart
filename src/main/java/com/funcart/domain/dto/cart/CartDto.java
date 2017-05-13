@@ -2,8 +2,6 @@ package com.funcart.domain.dto.cart;
 
 import java.util.List;
 
-import com.funcart.domain.Item;
-
 public class CartDto {
 	
 	private String email;

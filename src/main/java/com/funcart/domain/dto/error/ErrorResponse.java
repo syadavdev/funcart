@@ -1,4 +1,4 @@
-package com.funcart.domain.dto;
+package com.funcart.domain.dto.error;
 
 public class ErrorResponse {
 
