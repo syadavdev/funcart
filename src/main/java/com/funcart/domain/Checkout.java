@@ -22,18 +22,18 @@ public class Checkout {
 	private String customerName;
 	
 	@Column
-	private int customerId;
+	private int customerPhoneNumber;
 	public String getCustomerName() {
 		return customerName;
 	}
 	public void setCustomerName(String customerName) {
 		this.customerName = customerName;
 	}
-	public int getCustomerId() {
-		return customerId;
+	public int getcustomerPhoneNumber() {
+		return customerPhoneNumber;
 	}
-	public void setCustomerId(int customerId) {
-		this.customerId = customerId;
+	public void setcustomerPhoneNumber(int customerPhoneNumber) {
+		this.customerPhoneNumber = customerPhoneNumber;
 	}
 	
 

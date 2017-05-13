@@ -1,25 +1,29 @@
 package com.funcart.domain.dto;
 
+import java.util.List;
+import com.funcart.domain.dto.cart.CartItemDto;
+
 public class CheckoutDto {
-	
+
 	private String email;
-	private String customerName;
-	private String CustmomerPhoneNumber;
 
-	public String getCustomerName() {
-		return customerName;
+	private List<CartItemDto> itemDtoList;
+	private List<CheckaddressDto> addressList;
+
+	public List<CheckaddressDto> getAddressList() {
+		return addressList;
 	}
 
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
+	public void setAddressList(List<CheckaddressDto> addressList) {
+		this.addressList = addressList;
 	}
 
-	public String getCustmomerPhoneNumber() {
-		return CustmomerPhoneNumber;
+	public List<CartItemDto> getItemDtoList() {
+		return itemDtoList;
 	}
 
-	public void setCustmomerPhoneNumber(String custmomerPhoneNumber) {
-		CustmomerPhoneNumber = custmomerPhoneNumber;
+	public void setItemDtoList(List<CartItemDto> itemDtoList) {
+		this.itemDtoList = itemDtoList;
 	}
 
 	public String getEmail() {
@@ -29,6 +33,5 @@ public class CheckoutDto {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
 
 }

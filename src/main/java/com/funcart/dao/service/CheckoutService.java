@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.funcart.dao.AddressDao;
 import com.funcart.dao.CheckoutDao;
+
 import com.funcart.domain.dto.CheckoutDto;
 
 @Service
@@ -15,17 +16,14 @@ public class CheckoutService {
 
 	
 
-	public boolean checkCustomer(CheckoutDto checkDto) throws Exception {
-		if (checkDao.checkCustomer(checkDto))
-			return true;
-		else
-			return false;
-	}
-			
-			
-			
+	public CheckoutDto checkCustomer(String email) throws Exception {
 		
-
-		 
+		return(checkDao.checkout(email));
+		
+	}
 }
+			
+			
+			
+	
 	

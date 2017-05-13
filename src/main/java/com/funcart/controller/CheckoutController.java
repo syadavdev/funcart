@@ -1,5 +1,6 @@
 package com.funcart.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -17,9 +19,12 @@ import com.funcart.dao.service.CheckoutService;
 import com.funcart.domain.Customer;
 import com.funcart.domain.Item;
 import com.funcart.domain.dto.AddressDto;
+import com.funcart.domain.dto.CheckaddressDto;
 import com.funcart.domain.dto.CheckoutDto;
 
 import com.funcart.domain.dto.SignupDto;
+import com.funcart.domain.dto.cart.CartDto;
+import com.funcart.domain.dto.cart.CartItemDto;
 
 @RestController
 public class CheckoutController {
@@ -30,8 +35,32 @@ public class CheckoutController {
 
 	@Autowired
 	private CheckoutService checkService;
+	
+	
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/checkout",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity getCheckout(@RequestParam String email){
+		CheckoutDto checkDto = new CheckoutDto();
+		try{
+			checkDto = checkService.checkCustomer(email);
+			if(!checkDto.getItemDtoList().isEmpty()||!checkDto.getAddressList().isEmpty())
+			
+				httpStatus = HttpStatus.OK;
+				else{
+				httpStatus = HttpStatus.NOT_FOUND;
+				}
+		}catch(Exception e){
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			checkDto.setEmail(email);
+			checkDto.setItemDtoList(new ArrayList<CartItemDto>());
+			checkDto.setAddressList(new ArrayList<CheckaddressDto>());
+		}
+		
+		return new ResponseEntity<CheckoutDto>(checkDto,httpStatus);
+	}
+}
 
-	@SuppressWarnings({ "rawtypes", "static-access" })
+	/*@SuppressWarnings({ "rawtypes", "static-access" })
 
 	@RequestMapping(value = "/checkot", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity savePayment(@RequestBody CheckoutDto checkDto) throws Exception {
@@ -54,4 +83,4 @@ public class CheckoutController {
 		return new ResponseEntity<CheckoutDto>(checkObj, httpStatus);
 	}
 
-}
+}*/
