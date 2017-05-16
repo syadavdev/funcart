@@ -2,6 +2,8 @@ package com.funcart.controller;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,18 +27,22 @@ public class ItemController {
 	@SuppressWarnings({ "rawtypes", "static-access" })
 	@RequestMapping(value="/items",method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity getItems(){
+		String errorMsg = "Empty Item List";
 		try{
 			if(itemService.getList()){
 				httpStatus = httpStatus.OK;
+				return new ResponseEntity<List<ItemDto>>(itemService.getItemDtoList(),httpStatus);
 			}else{
 				httpStatus = httpStatus.NOT_FOUND;
-				return new ResponseEntity<ErrorResponse>(new ErrorResponse(404, "Empty Item List"), httpStatus);
+				errorMsg = "Items Retrieving Error";
 			}
+		}catch(NoResultException e){
+			httpStatus = httpStatus.NOT_FOUND;
+			errorMsg = "Not Found";
 		}catch(Exception e){
 			httpStatus = httpStatus.INTERNAL_SERVER_ERROR;
-			return new ResponseEntity<ErrorResponse>(new ErrorResponse(404, "Internal Server Error"), httpStatus);			
+			errorMsg = "Internal Server Error";			
 		}
-		
-		return new ResponseEntity<List<ItemDto>>(itemService.getItemDtoList(),httpStatus);
+		return new ResponseEntity<ErrorResponse>(new ErrorResponse(httpStatus.value(),errorMsg),httpStatus);
 	}
 }

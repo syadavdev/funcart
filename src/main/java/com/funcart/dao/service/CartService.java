@@ -3,16 +3,18 @@ package com.funcart.dao.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.funcart.dao.CartDao;
 import com.funcart.domain.Cart;
 import com.funcart.domain.Item;
-import com.funcart.domain.dto.ItemDto;
-import com.funcart.domain.dto.cart.AddDeleteItemDto;
 import com.funcart.domain.dto.cart.CartDto;
 import com.funcart.domain.dto.cart.CartItemDto;
+import com.funcart.domain.dto.cart.UpdateCartDto;
+import com.funcart.domain.dto.cart.UpdateCartItemDto;
 
 @Service
 public class CartService {
@@ -21,31 +23,29 @@ public class CartService {
 	private CartDao cartDao;
 	
 	private CartDto cartDto;
+	private String errorMsg;
 
 	public boolean getCart(String email) throws Exception{
 		boolean flag = false;
 		List<Cart> cartList = null;
-		
 		int customerId = cartDao.getCustomer(email);
-		
 		if(customerId > 0){
-			cartList = cartDao.getCartList(customerId);
+				cartList = cartDao.getCartList(customerId);
 			if(!cartList.isEmpty() || cartList != null){
 				cartDto = new CartDto();
 				cartDto.setEmail(email);
 				cartDto.setItemDtoList(getCartItems(cartList));
+				flag = true;
 			}
 		}
-		if(!cartDto.getItemDtoList().isEmpty() && cartDto != null)
-			flag = true;
 		return flag;		
 	}
 	
 	public List<CartItemDto> getCartItems(List<Cart> cartList)throws Exception{
 		List<CartItemDto> cartItemDtoList = new ArrayList<CartItemDto>();
-		
 		if(!cartList.isEmpty()){
 			Item item = null;
+			
 			for(Cart cart: cartList){
 				CartItemDto cartItemDto = new CartItemDto();
 				
@@ -63,40 +63,80 @@ public class CartService {
 		return cartItemDtoList;
 	}
 	
-	
-	public ItemDto addToCart(AddDeleteItemDto addDeleteItem) throws Exception{
-		ItemDto itemDto = null;
-		int customerId = 0;
-		
-		if(addDeleteItem.getItemId() > 0){
-			customerId = cartDao.getCustomer(addDeleteItem.getEmail());
-			if(customerId > 0){
-				
-			}
-		}
-		
-		return itemDto;
-	}
-	
-	public boolean deleteFromCart(AddDeleteItemDto addDeleteItem) throws Exception{
+	public boolean updateCart(UpdateCartDto updateCartDto)throws Exception{
 		boolean flag = false;
 		int customerId = 0;
 		
-		if(addDeleteItem.getItemId() > 0){
-			customerId = cartDao.getCustomer(addDeleteItem.getEmail());
-			if(customerId > 0){
-				if(cartDao.deleteItems(addDeleteItem.getItemId(), customerId))
+		customerId = cartDao.getCustomer(updateCartDto.getEmail());
+		cartDao.deleteCart(customerId);
+		
+		List<UpdateCartItemDto> cartItemList = updateCartDto.getUpdateCartItem();
+		
+		for(UpdateCartItemDto cartItem : cartItemList){
+			if(cartDao.addCartItems(customerId, cartItem.getItemId(), cartItem.getItemQty())){
 					flag = true;
+			}else{
+				flag = false;
+				break;
 			}
 		}
 		return flag;
 	}
 	
+	public boolean checkCartInput(UpdateCartDto updateCartDto) throws Exception{
+		boolean flag = false;
+		int customerId = 0;
+		try{
+			customerId = cartDao.getCustomer(updateCartDto.getEmail());
+		}catch(NoResultException e){
+			customerId = 0;
+		}
+		if(customerId > 0){
+			if(checkCartItems(updateCartDto.getUpdateCartItem())){
+				flag = true;
+			}
+		}else{
+			errorMsg = "Customer Not Exist";
+		}
+
+		return flag;
+	}
+	
+	public boolean checkCartItems(List<UpdateCartItemDto> cartItemsList) throws Exception{
+		boolean flag = false;
+		for(UpdateCartItemDto cartItem: cartItemsList){
+			if(cartItem.getItemId() >= 0 && cartItem.getItemQty() >= 0){
+				try{
+					Item item = cartDao.getItem(cartItem.getItemId());
+					if(item != null){
+						flag = true;
+					}else{
+						break;
+					}
+				}catch(NoResultException e){
+					errorMsg = "Invalid CartId";
+					flag = false;
+					break;
+				}
+			}else{
+				flag = false;
+				errorMsg = "Invalid CartItemId";
+				break;
+			}
+		}
+		return flag;
+	}
+
 	public CartDto getCartDto() {
 		return cartDto;
 	}
-
 	public void setCartDto(CartDto cartDto) {
 		this.cartDto = cartDto;
+	}
+	public String getErrorMsg() {
+		return errorMsg;
+	}
+	public void setErrorMsg(String errorMsg) {
+		this.errorMsg = errorMsg;
 	}
 }

@@ -17,35 +17,49 @@ public class CartDao {
 	
 	@PersistenceContext
 	private EntityManager em;
-
-	public boolean addItems(int customerId,int itemId)throws Exception{
+	
+	@Transactional(rollbackOn=Exception.class)
+	public boolean addCartItems(Integer customerId,Integer itemId,Integer quantity)throws Exception{
 		boolean flag = false;
-		int check = em.createQuery("Insert Into Cart(customerId,itemId,quantity) Values(?,?,?)")
-					  .setParameter(0, customerId)
-					  .setParameter(1, itemId)
+		int check = em.createNativeQuery("INSERT INTO cart(customerId,itemId,quantity) VALUES (?, ?, ?)")
+					  .setParameter(1, customerId)
+					  .setParameter(2, itemId)
+					  .setParameter(3, quantity)
 					  .executeUpdate();
 		if(check > 0)
-			flag = true;		
+			flag = true;
 		return flag;
 	}
 	
 	@Transactional(value=TxType.REQUIRED, rollbackOn={Exception.class})
-	public boolean deleteItems(Integer itemId,Integer customerId)throws Exception{
+	public boolean deleteCart(Integer customerId)throws Exception{
 		boolean flag = false;
-		int check = 0;
-		try{
-			check = em.createQuery("Delete From Cart as cart Where cart.itemId = ? And cart.customerId = ?")
-					  .setParameter(0, itemId)
-					  .setParameter(1, customerId)
-					  .executeUpdate();
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		
-		if(check > 0)
-			flag = true;		
+		int check = -1;
+		check = em.createQuery("Delete From Cart as cart Where cart.customerId = ?")
+				  .setParameter(0, customerId)
+				  .executeUpdate();
+		if(check >= 0)
+			flag = true;
 		return flag;
 	}
+	
+/*	public boolean checkExistCart(Integer itemId,Integer customerId)throws Exception{
+		boolean flag = false;
+		Cart cart = null;
+		try{
+			cart = (Cart)em.createQuery("Select c From Cart as cart cart.itemId = ? And cart.customerID = ?")
+					 	   .setParameter(0, itemId)
+					 	   .setParameter(1,customerId)
+					 	   .getSingleResult();
+		}catch(EntityNotFoundException e){
+			cart = null;
+		}catch(Exception e){
+			throw e;
+		}
+		if(cart != null)
+			flag = true;
+		return cart;
+	}*/
 	
 	public int getCustomer(String email)throws Exception{
 		int id = 0;
