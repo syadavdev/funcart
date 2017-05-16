@@ -1,6 +1,8 @@
 
 package com.funcart.controller;
 
+import javax.persistence.NoResultException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -45,50 +47,57 @@ public class CustomerController {
 	@SuppressWarnings({ "static-access", "rawtypes" })
 	@RequestMapping(value = "/login",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity checkLoginDetail(@RequestBody LoginDto loginDto) throws Exception{
-		
+		String errorMsg = "Invalid username or password";
 		if(loginDto == null || (StringUtils.isEmpty(loginDto.getName()) || StringUtils.isEmpty(loginDto.getPassword()))
 				 || !Validator.passwordValidate(loginDto.getPassword())){
-			return new ResponseEntity<ErrorResponse>(new ErrorResponse(400, "Invalid username or password"), httpStatus);
+			httpStatus = httpStatus.BAD_REQUEST;
 		}
 		else{
 			try{
 				if(loginService.checkLogin(loginDto)){
 					httpStatus = httpStatus.OK;
+					return new ResponseEntity<CustomerDto>(loginService.getCustomerDto(),httpStatus);
 				}
 				else{
 					httpStatus = httpStatus.UNAUTHORIZED;
-					return new ResponseEntity<ErrorResponse>(new ErrorResponse(400, "Invalid username or password"), httpStatus);
+					errorMsg = "Invalid Username And Password";
 				}
+			}catch(NoResultException e){
+				httpStatus = httpStatus.NOT_FOUND;
+				errorMsg = "Not_Found";
 			}catch(Exception e){
 				httpStatus = httpStatus.INTERNAL_SERVER_ERROR;
-				return new ResponseEntity<ErrorResponse>(new ErrorResponse(500, "Internal server error"), httpStatus);
+				errorMsg = "Internal Server error";
+				e.printStackTrace();
 			}
 		}
-		return new ResponseEntity<CustomerDto>(loginService.getCustomerDto(),httpStatus);
+		return new ResponseEntity<ErrorResponse>(new ErrorResponse(httpStatus.value(), errorMsg),httpStatus);
 	}
 	
 	@SuppressWarnings({ "rawtypes", "static-access" })
 	@RequestMapping(value = "/signup",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity saveSignupDetail(@RequestBody SignupDto signupDto) throws Exception{
+		String errorMsg = "Empty Field";
 		if(signupDto == null || StringUtils.isEmpty(signupDto.getEmail()) || StringUtils.isEmpty(signupDto.getPassword()) 
-				|| StringUtils.isEmpty(signupDto.getUsername()) || signupDto.getPhoneNumber() == 0L)
-			return new ResponseEntity<ErrorResponse>(new ErrorResponse(400, "Empty field"), httpStatus);
-		
-		if(!signupService.checkSignupDetail(signupDto))
-			return new ResponseEntity<ErrorResponse>(new ErrorResponse(400, signupService.getErrorStr()), httpStatus);
-
-		try{
-			if(signupService.saveCustomer(signupDto)){
-				httpStatus = httpStatus.CREATED;
-			}else{
-				httpStatus = httpStatus.EXPECTATION_FAILED;
-				return new ResponseEntity<ErrorResponse>(new ErrorResponse(417,signupService.getErrorStr()), httpStatus);
+				|| StringUtils.isEmpty(signupDto.getUsername()) || signupDto.getPhoneNumber() == 0L){
+			httpStatus = httpStatus.BAD_REQUEST;
+		}else if(!signupService.checkSignupDetail(signupDto)){
+			httpStatus = httpStatus.BAD_REQUEST;
+			errorMsg = signupService.getErrorStr();
+		}else{
+			try{
+				if(signupService.saveCustomer(signupDto)){
+					httpStatus = httpStatus.CREATED;
+					return new ResponseEntity<SignupDto>(signupService.getSignupDto(),httpStatus);
+				}else{
+					httpStatus = httpStatus.EXPECTATION_FAILED;
+					errorMsg = signupService.getErrorStr();
+				}
+			}catch(Exception e){
+				httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+				errorMsg = "Internal server error";
 			}
-		}catch(Exception e){
-			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-			return new ResponseEntity<ErrorResponse>(new ErrorResponse(500, "Internal server error"), httpStatus);
 		}
-		
-		return new ResponseEntity<SignupDto>(signupService.getSignupDto(),httpStatus);
+		return new ResponseEntity<ErrorResponse>(new ErrorResponse(httpStatus.value(), errorMsg), httpStatus);
 	}
 }

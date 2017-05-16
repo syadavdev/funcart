@@ -1,9 +1,8 @@
 package com.funcart.domain.dto.cart;
 
-public class AddDeleteItemDto {
-	
-	private String email;
+public class UpdateCartItemDto {
 	private int ItemId;
+	private int ItemQty;
 	
 	public int getItemId() {
 		return ItemId;
@@ -11,10 +10,10 @@ public class AddDeleteItemDto {
 	public void setItemId(int itemId) {
 		ItemId = itemId;
 	}
-	public String getEmail() {
-		return email;
+	public int getItemQty() {
+		return ItemQty;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+	public void setItemQty(int itemQty) {
+		ItemQty = itemQty;
 	}
 }

@@ -3,6 +3,7 @@ package com.funcart.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
@@ -45,11 +46,14 @@ public class SignupDao {
 	public boolean alreadyExist(SignupDto signupDto)throws Exception{
 		boolean flag = false;
 		existCustomers = null;
-		existCustomers =  em.createQuery("from Customer as o where o.phoneNumber = ? or o.email = ?")
-			     		   .setParameter(0, signupDto.getPhoneNumber())
-						   .setParameter(1, signupDto.getEmail())
-						   .getResultList();
-		
+		try{
+			existCustomers = (List<Customer>) em.createQuery("from Customer as o where o.phoneNumber = ? or o.email = ?")
+												.setParameter(0, signupDto.getPhoneNumber())
+												.setParameter(1, signupDto.getEmail())
+												.getResultList();
+		}catch(NoResultException e){
+			existCustomers = null;
+		}
 		if(!existCustomers.isEmpty() && existCustomers != null)
 			flag = true;
 		return flag;
