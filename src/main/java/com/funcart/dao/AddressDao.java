@@ -14,44 +14,29 @@ public class AddressDao {
 	private EntityManager em;
 
 	@Transactional(rollbackOn = Exception.class)
-	public boolean saveCustomer(AddressDto shipDto) throws Exception {
-
+	public boolean saveCustomer(AddressDto addressDto) throws Exception {
 		boolean flag = false;
+		int result = 0;
 
-		Customer customer = new Customer();
-		customer.setEmail(shipDto.getEmail());
-		customer.setBillingAddress(shipDto.getBillingAddress());
-		customer.setShippingAddress(shipDto.getShippingAddress());
-
-		try {
-
-			if (checkShipDetail(customer)) {
-
-				int result = em
-						.createQuery(
-								"UPDATE Customer SET billingAddress = :billingAddress,shippingAddress = :shippingAddress"
+		result = em.createQuery("UPDATE Customer SET billingAddress = :billingAddress,shippingAddress = :shippingAddress"
 										+ " where email = :email")
-						.setParameter("email", customer.getEmail())
-						.setParameter("shippingAddress", customer.getShippingAddress())
-						.setParameter("billingAddress", customer.getBillingAddress()).executeUpdate();
+					.setParameter("email", addressDto.getEmail())
+					.setParameter("shippingAddress", addressDto.getShippingAddress())
+					.setParameter("billingAddress", addressDto.getBillingAddress()).executeUpdate();
 
-				if (result > 0)
-					flag = true;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}
+		if(result > 0)
+			flag = true;
 		return flag;
 	}
-
-	public boolean checkShipDetail(Customer customer) {
+	
+	public boolean checkCustomer(String email)throws Exception{
 		boolean flag = false;
-		if (customer.getShippingAddress().isEmpty() || customer.getBillingAddress().isEmpty()) {
-			flag = false;
-		} else {
+		Customer customer = null;
+		customer = (Customer) em.createQuery("Select c From Customer As c Where c.email = ?")
+								.setParameter(0, email)
+								.getSingleResult();
+		if(customer != null)
 			flag = true;
-		}
 		return flag;
 	}
 }
