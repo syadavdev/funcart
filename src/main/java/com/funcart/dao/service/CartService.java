@@ -104,17 +104,26 @@ public class CartService {
 	
 	public boolean checkCartItems(List<UpdateCartItemDto> cartItemsList) throws Exception{
 		boolean flag = false;
+		ArrayList<Integer> itemList = new ArrayList<Integer>();
 		for(UpdateCartItemDto cartItem: cartItemsList){
 			if(cartItem.getItemId() >= 0 && cartItem.getItemQty() >= 0){
-				try{
-					Item item = cartDao.getItem(cartItem.getItemId());
-					if(item != null){
-						flag = true;
-					}else{
+				if(!itemList.contains(cartItem.getItemId())){
+					try{
+						Item item = cartDao.getItem(cartItem.getItemId());
+						if(item != null){
+							itemList.add(item.getItemId());
+							flag = true;
+						}else{
+							break;
+						}
+				
+					}catch(NoResultException e){
+						errorMsg = "Invalid CartId";
+						flag = false;
 						break;
 					}
-				}catch(NoResultException e){
-					errorMsg = "Invalid CartId";
+				}else{
+					errorMsg = "Duplicate CartItems";
 					flag = false;
 					break;
 				}
