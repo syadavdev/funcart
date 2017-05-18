@@ -118,7 +118,7 @@ public class CartService {
 						}
 				
 					}catch(NoResultException e){
-						errorMsg = "Invalid CartId";
+						errorMsg = "Invalid ItemId";
 						flag = false;
 						break;
 					}

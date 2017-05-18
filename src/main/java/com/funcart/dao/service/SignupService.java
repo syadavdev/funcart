@@ -39,7 +39,7 @@ public class SignupService {
 		String str = "";
 		
 		flag[0] = 
-				Validator.nameValidate(signupDto.getUsername()) ? true : false;
+				Validator.nameValidate(signupDto.getName()) ? true : false;
 		flag[1] = 
 				Validator.emailValidate(signupDto.getEmail()) ? true : false;
 		flag[2] = 
