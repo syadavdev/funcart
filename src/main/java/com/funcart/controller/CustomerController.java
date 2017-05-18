@@ -79,7 +79,7 @@ public class CustomerController {
 	public ResponseEntity saveSignupDetail(@RequestBody SignupDto signupDto) throws Exception{
 		String errorMsg = "Empty Field";
 		if(signupDto == null || StringUtils.isEmpty(signupDto.getEmail()) || StringUtils.isEmpty(signupDto.getPassword()) 
-				|| StringUtils.isEmpty(signupDto.getUsername()) || signupDto.getPhoneNumber() == 0L){
+				|| StringUtils.isEmpty(signupDto.getName()) || signupDto.getPhoneNumber() == 0L){
 			httpStatus = httpStatus.BAD_REQUEST;
 		}else if(!signupService.checkSignupDetail(signupDto)){
 			httpStatus = httpStatus.BAD_REQUEST;

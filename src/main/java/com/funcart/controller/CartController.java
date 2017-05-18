@@ -79,7 +79,7 @@ public class CartController {
 						errorMsg = cartService.getErrorMsg();
 					}
 				}else{
-					httpStatus = HttpStatus.NOT_FOUND;
+					httpStatus = HttpStatus.BAD_REQUEST;
 					errorMsg = cartService.getErrorMsg();
 				}
 			}catch(Exception e){

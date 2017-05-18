@@ -28,7 +28,7 @@ public class SignupDao {
 			
 		result = em.createNativeQuery("INSERT INTO customer (username, password, email, phoneNumber,shippingAddress,billingAddress) "
 						+ "VALUES (?, ?, ?, ?, ?, ?)")
-					.setParameter(1, signupDto.getUsername())
+					.setParameter(1, signupDto.getName())
 					.setParameter(2, signupDto.getPassword())
 					.setParameter(3, signupDto.getEmail())
 					.setParameter(4, signupDto.getPhoneNumber())
