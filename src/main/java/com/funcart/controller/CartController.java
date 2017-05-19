@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.funcart.dao.service.CartService;
+import com.funcart.domain.dto.Response.ErrorResponse;
+import com.funcart.domain.dto.Response.SuccessResponse;
 import com.funcart.domain.dto.cart.CartDto;
 import com.funcart.domain.dto.cart.UpdateCartDto;
-import com.funcart.domain.dto.error.ErrorResponse;
-import com.funcart.domain.dto.error.SuccessResponse;
 import com.funcart.validator.Validator;
 
 @RestController
@@ -32,7 +32,7 @@ public class CartController {
 	@RequestMapping(value = "/getCart",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity getCartItems(@RequestParam String email){
 		String errorMsg = "Invalid Email";
-		if(email.isEmpty() || !Validator.emailValidate(email)){
+		if(StringUtils.isEmpty(email) || !Validator.emailValidate(email)){
 			return new ResponseEntity<ErrorResponse>(new ErrorResponse(400,"Invalid Email"),httpStatus);
 		}
 		
@@ -64,10 +64,10 @@ public class CartController {
 	public ResponseEntity updateCart(@RequestBody UpdateCartDto updateCartDto){
 		String errorMsg = "Invalid Input";
 		httpStatus = HttpStatus.BAD_REQUEST;
-		if(StringUtils.isEmpty(updateCartDto.getEmail())){
-			errorMsg = "Empty Input";
-		}else if(!Validator.emailValidate(updateCartDto.getEmail())){
-			errorMsg = "Invalid Email";
+		if(StringUtils.isEmpty(updateCartDto.getEmail()) || StringUtils.isEmpty(updateCartDto.getPassword())){
+			errorMsg = "Empty Input Fields";
+		}else if(!Validator.emailValidate(updateCartDto.getEmail()) || !Validator.passwordValidate(updateCartDto.getPassword())){
+			errorMsg = "Invalid Email And Password";
 		}else{
 			try{
 				if(cartService.checkCartInput(updateCartDto)){
@@ -79,7 +79,7 @@ public class CartController {
 						errorMsg = cartService.getErrorMsg();
 					}
 				}else{
-					httpStatus = HttpStatus.NOT_FOUND;
+					httpStatus = HttpStatus.BAD_REQUEST;
 					errorMsg = cartService.getErrorMsg();
 				}
 			}catch(Exception e){

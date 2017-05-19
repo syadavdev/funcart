@@ -15,15 +15,28 @@ public class LoginService {
 	@Autowired 
 	private LoginDao loginDao;
 	private CustomerDto customerDto;
-	
+	private String errorMsg;
+
 	public boolean checkLogin(LoginDto loginDto) throws Exception{
 		boolean flag = false,var1 = false,var2 = false;
 		Customer customer = null;
 		customerDto = null;
-		if(var1 = Validator.phoneNumberValidate(loginDto.getName())){
-			loginDao.loginByPhone(loginDto);
-		}else if(var2 = Validator.emailValidate(loginDto.getName())){
-			loginDao.loginByEmail(loginDto);	  
+		if(Validator.phoneNumberValidate(loginDto.getEmailOrPhoneNumber())){
+			if(loginDao.loginByPhone(loginDto)){
+				var1 = true;
+			}else{
+				errorMsg = "PhoneNumber Invalid";
+				return false;
+			}
+		}else if(Validator.emailValidate(loginDto.getEmailOrPhoneNumber())){
+			if(loginDao.loginByEmail(loginDto)){
+				var2 = true;
+			}else{
+				errorMsg = "Email Invalid";
+				return false;
+			}
+		}else{
+			errorMsg = "Invalid 'emailOrPhoneNumber' Detail";
 		}
 		
 		if(var1 || var2){
@@ -47,5 +60,13 @@ public class LoginService {
 
 	public void setCustomerDto(CustomerDto customerDto) {
 		this.customerDto = customerDto;
+	}
+	
+	public String getErrorMsg() {
+		return errorMsg;
+	}
+
+	public void setErrorMsg(String errorMsg) {
+		this.errorMsg = errorMsg;
 	}
 }

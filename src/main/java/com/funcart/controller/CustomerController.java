@@ -18,7 +18,7 @@ import com.funcart.dao.service.SignupService;
 import com.funcart.domain.dto.CustomerDto;
 import com.funcart.domain.dto.LoginDto;
 import com.funcart.domain.dto.SignupDto;
-import com.funcart.domain.dto.error.ErrorResponse;
+import com.funcart.domain.dto.Response.ErrorResponse;
 import com.funcart.validator.Validator;
 
 @RestController
@@ -48,7 +48,7 @@ public class CustomerController {
 	@RequestMapping(value = "/login",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity checkLoginDetail(@RequestBody LoginDto loginDto) throws Exception{
 		String errorMsg = "Invalid username or password";
-		if(loginDto == null || (StringUtils.isEmpty(loginDto.getName()) || StringUtils.isEmpty(loginDto.getPassword()))
+		if(loginDto == null || (StringUtils.isEmpty(loginDto.getEmailOrPhoneNumber()) || StringUtils.isEmpty(loginDto.getPassword()))
 				 || !Validator.passwordValidate(loginDto.getPassword())){
 			httpStatus = httpStatus.BAD_REQUEST;
 		}
@@ -60,7 +60,7 @@ public class CustomerController {
 				}
 				else{
 					httpStatus = httpStatus.UNAUTHORIZED;
-					errorMsg = "Invalid Username And Password";
+					errorMsg = loginService.getErrorMsg();
 				}
 			}catch(NoResultException e){
 				httpStatus = httpStatus.NOT_FOUND;
@@ -79,7 +79,7 @@ public class CustomerController {
 	public ResponseEntity saveSignupDetail(@RequestBody SignupDto signupDto) throws Exception{
 		String errorMsg = "Empty Field";
 		if(signupDto == null || StringUtils.isEmpty(signupDto.getEmail()) || StringUtils.isEmpty(signupDto.getPassword()) 
-				|| StringUtils.isEmpty(signupDto.getUsername()) || signupDto.getPhoneNumber() == 0L){
+				|| StringUtils.isEmpty(signupDto.getName()) || signupDto.getPhoneNumber() == 0L){
 			httpStatus = httpStatus.BAD_REQUEST;
 		}else if(!signupService.checkSignupDetail(signupDto)){
 			httpStatus = httpStatus.BAD_REQUEST;

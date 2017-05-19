@@ -28,7 +28,7 @@ public class CartService {
 	public boolean getCart(String email) throws Exception{
 		boolean flag = false;
 		List<Cart> cartList = null;
-		int customerId = cartDao.getCustomer(email);
+		int customerId = cartDao.getCustomerByEmail(email);
 		if(customerId > 0){
 				cartList = cartDao.getCartList(customerId);
 			if(!cartList.isEmpty() || cartList != null){
@@ -67,7 +67,7 @@ public class CartService {
 		boolean flag = false;
 		int customerId = 0;
 		
-		customerId = cartDao.getCustomer(updateCartDto.getEmail());
+		customerId = cartDao.getCustomerByEmailPassword(updateCartDto.getEmail(),updateCartDto.getPassword());
 		cartDao.deleteCart(customerId);
 		
 		List<UpdateCartItemDto> cartItemList = updateCartDto.getUpdateCartItem();
@@ -87,7 +87,7 @@ public class CartService {
 		boolean flag = false;
 		int customerId = 0;
 		try{
-			customerId = cartDao.getCustomer(updateCartDto.getEmail());
+			customerId = cartDao.getCustomerByEmailPassword(updateCartDto.getEmail(),updateCartDto.getPassword());
 		}catch(NoResultException e){
 			customerId = 0;
 		}
@@ -118,7 +118,7 @@ public class CartService {
 						}
 				
 					}catch(NoResultException e){
-						errorMsg = "Invalid CartId";
+						errorMsg = "Invalid ItemId";
 						flag = false;
 						break;
 					}
