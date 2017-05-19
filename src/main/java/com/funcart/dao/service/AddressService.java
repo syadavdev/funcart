@@ -25,10 +25,10 @@ public class AddressService {
 		}
 	}
 	
-	public boolean checkExistingCustomer(String email) throws Exception {
+	public boolean checkExistingCustomer(String email,String password) throws Exception {
 		boolean flag = false;
 		try{
-			if(addressDao.checkCustomer(email)){
+			if(addressDao.checkCustomer(email,password)){
 				flag = true;
 			}
 			else{

@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.funcart.dao.service.AddressService;
 import com.funcart.domain.dto.AddressDto;
-import com.funcart.domain.dto.error.ErrorResponse;
-import com.funcart.domain.dto.error.SuccessResponse;
+import com.funcart.domain.dto.Response.ErrorResponse;
+import com.funcart.domain.dto.Response.SuccessResponse;
 import com.funcart.validator.Validator;
 
 @RestController
@@ -31,14 +31,14 @@ public class AddressController {
 		
 		String errorMsg = "Empty Fields";
 		if(StringUtils.isEmpty(addressDto.getBillingAddress()) || StringUtils.isEmpty(addressDto.getBillingAddress()) ||
-				StringUtils.isEmpty(addressDto.getEmail())){
+				StringUtils.isEmpty(addressDto.getEmail()) || StringUtils.isEmpty(addressDto.getPassword())){
 			httpStatus = HttpStatus.BAD_REQUEST;
-		}else if(!Validator.emailValidate(addressDto.getEmail())){
+		}else if(!Validator.emailValidate(addressDto.getEmail()) || !Validator.passwordValidate(addressDto.getPassword())){
 			httpStatus = HttpStatus.BAD_REQUEST;
-			errorMsg = "Invalid Email";
+			errorMsg = "Invalid Email And Password";
 		}else{
 			try{
-				if(addressService.checkExistingCustomer(addressDto.getEmail())){
+				if(addressService.checkExistingCustomer(addressDto.getEmail(),addressDto.getPassword())){
 					if (addressService.saveCustomer(addressDto)) {
 						httpStatus = httpStatus.OK;
 						return new ResponseEntity<SuccessResponse>(new SuccessResponse("Address Saved SuccessFully",httpStatus.value()),httpStatus);

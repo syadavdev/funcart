@@ -29,11 +29,12 @@ public class AddressDao {
 		return flag;
 	}
 	
-	public boolean checkCustomer(String email)throws Exception{
+	public boolean checkCustomer(String email,String password)throws Exception{
 		boolean flag = false;
 		Customer customer = null;
-		customer = (Customer) em.createQuery("Select c From Customer As c Where c.email = ?")
+		customer = (Customer) em.createQuery("Select c From Customer As c Where c.email = ? And c.password = ?")
 								.setParameter(0, email)
+								.setParameter(1, password)
 								.getSingleResult();
 		if(customer != null)
 			flag = true;
