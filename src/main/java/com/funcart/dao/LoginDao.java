@@ -22,7 +22,7 @@ public class LoginDao {
 		  customer = null;		  
 		  customer = (Customer) em.createQuery("Select o from Customer as o where o.password = ? and o.phoneNumber = ?")
 				  				.setParameter(0,loginDto.getPassword())
-				  				.setParameter(1,Long.parseLong(loginDto.getName()))
+				  				.setParameter(1,Long.parseLong(loginDto.getEmailOrPhoneNumber()))
 				  				.getSingleResult(); 
 		  if(customer != null)
 			  flag = true;
@@ -35,7 +35,7 @@ public class LoginDao {
 		  customer = null;
 		  customer = (Customer) em.createQuery("Select o from Customer as o where o.password = ? and o.email = ?")
 				  					.setParameter(0,loginDto.getPassword())
-				  					.setParameter(1,loginDto.getName())
+				  					.setParameter(1,loginDto.getEmailOrPhoneNumber())
 				  					.getSingleResult();
 		  if(customer != null)
 			  flag = true;
