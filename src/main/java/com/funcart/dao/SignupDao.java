@@ -10,7 +10,7 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 import com.funcart.domain.Customer;
-import com.funcart.domain.dto.SignupDto;
+import com.funcart.domain.dto.customer.SignupDto;
 
 @Repository
 public class SignupDao {

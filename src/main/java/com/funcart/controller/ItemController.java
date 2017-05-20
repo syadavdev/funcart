@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.funcart.dao.service.ItemService;
-import com.funcart.domain.dto.AddItemListDto;
-import com.funcart.domain.dto.DeleteItemListDto;
-import com.funcart.domain.dto.ItemDto;
 import com.funcart.domain.dto.Response.ErrorResponse;
 import com.funcart.domain.dto.Response.SuccessResponse;
+import com.funcart.domain.dto.item.AddItemListDto;
+import com.funcart.domain.dto.item.DeleteItemListDto;
+import com.funcart.domain.dto.item.ItemDto;
 import com.funcart.validator.Validator;
 
 @RestController
