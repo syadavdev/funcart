@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.funcart.dao.service.LoginService;
 import com.funcart.dao.service.SignupService;
-import com.funcart.domain.dto.CustomerDto;
-import com.funcart.domain.dto.LoginDto;
-import com.funcart.domain.dto.SignupDto;
 import com.funcart.domain.dto.Response.ErrorResponse;
+import com.funcart.domain.dto.customer.CustomerDto;
+import com.funcart.domain.dto.customer.LoginDto;
+import com.funcart.domain.dto.customer.SignupDto;
 import com.funcart.validator.Validator;
 
 @RestController

@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 
 import com.funcart.dao.LoginDao;
 import com.funcart.domain.Customer;
-import com.funcart.domain.dto.CustomerDto;
-import com.funcart.domain.dto.LoginDto;
+import com.funcart.domain.dto.customer.CustomerDto;
+import com.funcart.domain.dto.customer.LoginDto;
 import com.funcart.validator.Validator;
 
 @Service
@@ -42,7 +42,7 @@ public class LoginService {
 		if(var1 || var2){
 			if((customer = loginDao.getCustomer()) != null){
 				customerDto = new CustomerDto();
-				customerDto.setUsername(customer.getUsername());
+				customerDto.setName(customer.getUsername());
 				customerDto.setPassword(customer.getPassword());
 				customerDto.setEmail(customer.getEmail());
 				customerDto.setPhoneNumber(customer.getPhoneNumber());

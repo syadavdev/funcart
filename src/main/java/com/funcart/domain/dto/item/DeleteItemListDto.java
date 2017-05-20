@@ -1,12 +1,11 @@
-package com.funcart.domain.dto;
+package com.funcart.domain.dto.item;
 
 import java.util.List;
 
-public class AddItemListDto {
-	
+public class DeleteItemListDto {
 	private String sellerName;
 	private String sellerPasscode;
-	private List<ItemDto> itemDtoList;
+	private List<String> itemNameList;
 	
 	public String getSellerName() {
 		return sellerName;
@@ -20,11 +19,10 @@ public class AddItemListDto {
 	public void setSellerPasscode(String sellerPasscode) {
 		this.sellerPasscode = sellerPasscode;
 	}
-	public List<ItemDto> getItemDtoList() {
-		return itemDtoList;
+	public List<String> getItemNameList() {
+		return itemNameList;
 	}
-	public void setItemDtoList(List<ItemDto> itemDtoList) {
-		this.itemDtoList = itemDtoList;
+	public void setItemNameList(List<String> itemNameList) {
+		this.itemNameList = itemNameList;
 	}
-	
 }
