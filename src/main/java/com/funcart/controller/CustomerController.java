@@ -46,7 +46,7 @@ public class CustomerController {
 
 	@SuppressWarnings({ "static-access", "rawtypes" })
 	@RequestMapping(value = "/login",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity checkLoginDetail(@RequestBody LoginDto loginDto) throws Exception{
+	public ResponseEntity checkLoginDetail(@RequestBody LoginDto loginDto){
 		String errorMsg = "Invalid username or password";
 		if(loginDto == null || (StringUtils.isEmpty(loginDto.getEmailOrPhoneNumber()) || StringUtils.isEmpty(loginDto.getPassword()))
 				 || !Validator.passwordValidate(loginDto.getPassword())){
@@ -76,7 +76,7 @@ public class CustomerController {
 	
 	@SuppressWarnings({ "rawtypes", "static-access" })
 	@RequestMapping(value = "/signup",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity saveSignupDetail(@RequestBody SignupDto signupDto) throws Exception{
+	public ResponseEntity saveSignupDetail(@RequestBody SignupDto signupDto){
 		String errorMsg = "Empty Field";
 		if(signupDto == null || StringUtils.isEmpty(signupDto.getEmail()) || StringUtils.isEmpty(signupDto.getPassword()) 
 				|| StringUtils.isEmpty(signupDto.getName()) || signupDto.getPhoneNumber() == 0L){

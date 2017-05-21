@@ -32,7 +32,7 @@ public class UpdateDetailsController {
 		
 	@SuppressWarnings({ "rawtypes" })
 	@RequestMapping(value = "/updateDetails",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity updateDetails(@RequestBody UpdateCustomerDto updateCustomerDto) throws Exception {
+	public ResponseEntity updateDetails(@RequestBody UpdateCustomerDto updateCustomerDto){
 		String errorMsg = "Empty Fields";
 		if(StringUtils.isEmpty(updateCustomerDto.getEmail()) || StringUtils.isEmpty(updateCustomerDto.getPassword())){
 			httpStatus = HttpStatus.BAD_REQUEST;
@@ -77,7 +77,7 @@ public class UpdateDetailsController {
 	
 	@SuppressWarnings({ "rawtypes" })
 	@RequestMapping(value = "/changeEmail",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity changeEmailDto(@RequestBody ChangeEmailDto changeEmailDto) throws Exception{
+	public ResponseEntity changeEmailDto(@RequestBody ChangeEmailDto changeEmailDto){
 		String errorMsg = "Empty Fields Details";
 		if(StringUtils.isEmpty(changeEmailDto.getPassword()) || StringUtils.isEmpty(changeEmailDto.getNewEmail())
 			|| StringUtils.isEmpty(changeEmailDto.getOldEmail())){
@@ -114,7 +114,7 @@ public class UpdateDetailsController {
 	
 	@SuppressWarnings({ "rawtypes" })
 	@RequestMapping(value = "/changePassword",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity changePasswordDto(@RequestBody ChangePasswordDto changePasswordDto) throws Exception{
+	public ResponseEntity changePasswordDto(@RequestBody ChangePasswordDto changePasswordDto){
 		String errorMsg = "Empty Fields Details";
 		if(StringUtils.isEmpty(changePasswordDto.getNewPassword()) || StringUtils.isEmpty(changePasswordDto.getOldPassword())
 			|| StringUtils.isEmpty(changePasswordDto.getEmail())){
