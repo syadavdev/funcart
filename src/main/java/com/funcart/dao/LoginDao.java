@@ -6,7 +6,7 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 import com.funcart.domain.Customer;
-import com.funcart.domain.dto.LoginDto;
+import com.funcart.domain.dto.customer.LoginDto;
 
 @Repository
 public class LoginDao {

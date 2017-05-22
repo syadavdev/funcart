@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import com.funcart.domain.Item;
-import com.funcart.domain.dto.ItemDto;
+import com.funcart.domain.dto.item.ItemDto;
 
 @Repository
 public class ItemsDao {

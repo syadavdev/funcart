@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.funcart.dao.SignupDao;
-import com.funcart.domain.dto.SignupDto;
+import com.funcart.domain.dto.customer.SignupDto;
 import com.funcart.validator.Validator;
 
 @Service
