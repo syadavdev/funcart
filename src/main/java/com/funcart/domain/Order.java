@@ -7,30 +7,63 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Order")
+@Table(name = "Orders")
 public class Order {
 	
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
-	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	@Column
 	private String customerName;
 	
+	public String getItemName() {
+		return itemName;
+	}
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
 	@Column
 	private int itemId;
 
+	@Column
+	private String itemName;
+
+	
 	@Column
 	private int customerId;
 	
 	@Column
 	private long customerPhoneNumber;
+	public int getItemId() {
+		return itemId;
+	}
+	public void setItemId(int itemId) {
+		this.itemId = itemId;
+	}
+	public String getBillingAddressId() {
+		return billingAddressId;
+	}
+	public void setBillingAddressId(String billingAddressId) {
+		this.billingAddressId = billingAddressId;
+	}
+	public String getShippingAddressId() {
+		return shippingAddressId;
+	}
+	public void setShippingAddressId(String shippingAddressId) {
+		this.shippingAddressId = shippingAddressId;
+	}
+	public Double getPrice() {
+		return price;
+	}
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+	public int getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
 	@Column
 	private String billingAddressId;
 	@Column
@@ -66,5 +99,10 @@ public class Order {
 		this.customerPhoneNumber = customerPhoneNumber;
 	}
 	
-
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 }
