@@ -12,6 +12,7 @@ import javax.transaction.Transactional.TxType;
 import org.springframework.stereotype.Repository;
 
 import com.funcart.domain.Cart;
+import com.funcart.domain.Customer;
 import com.funcart.domain.Item;
 import com.funcart.domain.Order;
 
@@ -22,11 +23,11 @@ public class OrderDao {
 	private EntityManager em;
 	
 	@Transactional(rollbackOn=Exception.class)
-	public boolean addOrderItems(Integer customerId,Integer itemId,Integer quantity)throws Exception{
+	public boolean addOrderItems(Integer customerId,long customerPhoneNumber,Integer quantity)throws Exception{
 		boolean flag = false;
-		int check = em.createNativeQuery("INSERT INTO Orders(customerId,itemId,quantity) VALUES (?, ?, ?)")
+		long check = em.createNativeQuery("INSERT INTO Orders(customerId,customerPhoneNumber,quantity) VALUES (?, ?, ?)")
 					  .setParameter(1, customerId)
-					  .setParameter(2, itemId)
+					  .setParameter(2, customerPhoneNumber)
 					  .setParameter(3, quantity)
 					  .executeUpdate();
 		if(check > 0)
@@ -43,6 +44,16 @@ public class OrderDao {
 					  			 .getResultList();
 		return orderList;
 	}
+	@SuppressWarnings("unchecked")
+	public boolean  getCustomer(String email)throws Exception{
+		List<Order> orderList = null;
+		boolean flag=false;
+		List result= em.createQuery("Select c From Customer as c where c.email = ?")
+				.setParameter(0,email)
+					  			// .setParameter(0, new Integer(customerId))
+					  			 .getResultList();
+		return true;
+	}
 	
 	public Item getItem(int cartId)throws Exception{
 		Item item = null;
@@ -51,16 +62,17 @@ public class OrderDao {
 				 		.getSingleResult();
 		return item;
 	}
+	
 
 	@Transactional(rollbackOn=Exception.class)
 	public int getCustomerByEmail(String email) throws Exception {
+	
 		 String customerId=null;
 		
 		try
 		{
 			int id = 0;
-			id = (Integer) em.createQuery(//"INSERT INTO 'Orders(customerId,customerName)"
-				"Select o.id From Customer as o where o.email =:email")
+			id = (Integer) em.createQuery("Select o.id  From Customer as o where o.email =:email")
 		   		  		 .setParameter("email",email)
 		   		  	//.executeUpdate();
 		   		  		.getSingleResult();
@@ -73,7 +85,7 @@ public class OrderDao {
 	}
 
 }
-	public Cart checkExistCart(Integer itemId,Integer customerId)throws Exception{
+	/*public Cart checkExistCart(Integer itemId,Integer customerId)throws Exception{
 		boolean flag = false;
 		Cart cart = null;
 		try{
@@ -89,7 +101,7 @@ public class OrderDao {
 		if(cart != null)
 			flag = true;
 		return cart;
-	}
+	}*/
 }
 
 

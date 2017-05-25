@@ -15,13 +15,6 @@ public class Order {
 	
 	@Column
 	private String customerName;
-	
-	public String getItemName() {
-		return itemName;
-	}
-	public void setItemName(String itemName) {
-		this.itemName = itemName;
-	}
 	@Column
 	private int itemId;
 
@@ -33,7 +26,17 @@ public class Order {
 	private int customerId;
 	
 	@Column
-	private long customerPhoneNumber;
+	private int customerPhoneNumber;
+	
+	public String getItemName() {
+		return itemName;
+	}
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+	
+	
+
 	public int getItemId() {
 		return itemId;
 	}
@@ -77,6 +80,9 @@ public class Order {
 	@Column
 	private int quantity;
 
+
+
+
 	
 	
 	public int getCustomerId() {
@@ -92,10 +98,10 @@ public class Order {
 	public void setCustomerName(String customerName) {
 		this.customerName = customerName;
 	}
-	public long getcustomerPhoneNumber() {
+	public int getcustomerPhoneNumber() {
 		return customerPhoneNumber;
 	}
-	public void setcustomerPhoneNumber(long customerPhoneNumber) {
+	public void setcustomerPhoneNumber(int customerPhoneNumber) {
 		this.customerPhoneNumber = customerPhoneNumber;
 	}
 	
