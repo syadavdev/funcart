@@ -67,7 +67,7 @@ public class CartService {
 		boolean flag = false;
 		int customerId = 0;
 		
-		customerId = cartDao.getCustomerByEmailPassword(updateCartDto.getEmail(),updateCartDto.getPassword());
+		customerId = cartDao.getCustomerByEmailPassword(updateCartDto.getEmail());
 		cartDao.deleteCart(customerId);
 		
 		List<UpdateCartItemDto> cartItemList = updateCartDto.getUpdateCartItem();
@@ -87,7 +87,7 @@ public class CartService {
 		boolean flag = false;
 		int customerId = 0;
 		try{
-			customerId = cartDao.getCustomerByEmailPassword(updateCartDto.getEmail(),updateCartDto.getPassword());
+			customerId = cartDao.getCustomerByEmailPassword(updateCartDto.getEmail());
 		}catch(NoResultException e){
 			customerId = 0;
 		}

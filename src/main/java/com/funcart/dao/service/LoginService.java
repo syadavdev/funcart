@@ -43,7 +43,6 @@ public class LoginService {
 			if((customer = loginDao.getCustomer()) != null){
 				customerDto = new CustomerDto();
 				customerDto.setName(customer.getUsername());
-				customerDto.setPassword(customer.getPassword());
 				customerDto.setEmail(customer.getEmail());
 				customerDto.setPhoneNumber(customer.getPhoneNumber());
 				customerDto.setBillingAddress(customer.getBillingAddress());

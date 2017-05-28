@@ -4,7 +4,6 @@ import java.util.List;
 
 public class UpdateCartDto {
 	private String email;
-	private String password;
 	private List<UpdateCartItemDto> updateCartItem;
 	
 	public String getEmail() {
@@ -12,12 +11,6 @@ public class UpdateCartDto {
 	}
 	public void setEmail(String email) {
 		this.email = email;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
 	}
 	public List<UpdateCartItemDto> getUpdateCartItem() {
 		return updateCartItem;
