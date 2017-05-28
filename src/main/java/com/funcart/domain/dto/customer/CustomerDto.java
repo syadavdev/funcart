@@ -3,7 +3,6 @@ package com.funcart.domain.dto.customer;
 public class CustomerDto {
 	
 	private String name;
-	private String password;
 	private String email;
 	private long phoneNumber;
 	private String billingAddress;
@@ -14,12 +13,6 @@ public class CustomerDto {
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
 	}
 	public String getEmail() {
 		return email;
