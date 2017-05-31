@@ -22,9 +22,20 @@ public class ImageLinkController {
 	@Autowired
 	private ImageLinkService imageLinkService;
 	
+	private class PicName{
+		private String picName;
+		
+		public String getPicName() {
+			return picName;
+		}
+		@SuppressWarnings("unused")
+		public void setPicName(String picName) {
+			this.picName = picName;
+		}
+	}
 	@SuppressWarnings("rawtypes")
-	@RequestMapping(value="/getImageLink",method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity getImageLink(@RequestBody String picName){
+	@RequestMapping(value="/imageLink",method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity getImageLink(@RequestBody PicName picName){
 		String errorMsg = "Empty Fields";
 		class PicLink{
 			public String picLink;
@@ -39,12 +50,12 @@ public class ImageLinkController {
 		}
 		if(StringUtils.isEmpty(picName)){
 			httpStatus = HttpStatus.BAD_REQUEST;
-		}else if(!Validator.imageNameValidate(picName)){
+		}else if(!Validator.imageNameValidate(picName.getPicName())){
 			httpStatus = HttpStatus.BAD_REQUEST;
 			errorMsg = "Invalid Input";
 		}else{
 			try{
-				if(imageLinkService.getImageLink(picName)){
+				if(imageLinkService.getImageLink(picName.getPicName())){
 					httpStatus = HttpStatus.OK;
 					PicLink picLinkStr = new PicLink();
 					picLinkStr.setPicLink(imageLinkService.getPicLink());

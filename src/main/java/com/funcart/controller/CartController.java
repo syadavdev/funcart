@@ -32,21 +32,33 @@ public class CartController {
 	
 	@Autowired
 	private JWTTokenGenerator jwt;
+	
+	private class CustomerEmail{
+		private String email;
+
+		public String getEmail() {
+			return email;
+		}
+		@SuppressWarnings("unused")
+		public void setEmail(String email) {
+			this.email = email;
+		}
+	}
 
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/getCart",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity getCartItems(@RequestParam String email,@RequestHeader String token,@RequestHeader String secret){
+	public ResponseEntity getCartItems(@RequestParam CustomerEmail email,@RequestHeader String token,@RequestHeader String secret){
 		String errorMsg = "Invalid Email";
 		httpStatus = HttpStatus.BAD_REQUEST;
 		if(!jwt.parseJWT(token,secret)){
 			httpStatus = HttpStatus.UNAUTHORIZED;
 			return new ResponseEntity<ErrorResponse>(new ErrorResponse(httpStatus.value(),"Token Time Expire"),httpStatus);
-		}else if(StringUtils.isEmpty(email) || !Validator.emailValidate(email)){
+		}else if(StringUtils.isEmpty(email) || !Validator.emailValidate(email.getEmail())){
 			return new ResponseEntity<ErrorResponse>(new ErrorResponse(httpStatus.value(),"Invalid Email"),httpStatus);
 		}
 		
 		try{
-			if(cartService.getCart(email)){
+			if(cartService.getCart(email.getEmail())){
 				if(!cartService.getCartDto().getItemDtoList().isEmpty()){
 					httpStatus = HttpStatus.OK;
 					return new ResponseEntity<CartDto>(cartService.getCartDto(),httpStatus);
