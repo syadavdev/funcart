@@ -61,11 +61,10 @@ public class CartDao {
 		return cart;
 	}*/
 	
-	public int getCustomerByEmailPassword(String email,String password)throws Exception{
+	public int getCustomerByEmailPassword(String email)throws Exception{
 		int id = 0;
-		id = (Integer) em.createQuery("Select id From Customer as o where o.email = ? and o.password = ?")
+		id = (Integer) em.createQuery("Select id From Customer as o where o.email = ?")
 		   		  		 .setParameter(0,email)
-		   		  		 .setParameter(1, password)
 		   		  		 .getSingleResult();
 		return id;
 	}

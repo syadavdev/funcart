@@ -2,6 +2,7 @@
 package com.funcart.controller;
 
 import javax.persistence.NoResultException;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import com.funcart.domain.dto.Response.ErrorResponse;
 import com.funcart.domain.dto.customer.CustomerDto;
 import com.funcart.domain.dto.customer.LoginDto;
 import com.funcart.domain.dto.customer.SignupDto;
+import com.funcart.utility.JWTTokenGenerator;
 import com.funcart.validator.Validator;
 
 @RestController
@@ -31,6 +33,9 @@ public class CustomerController {
 	
 	@Autowired
 	private SignupService signupService; 
+	
+	@Autowired
+	private JWTTokenGenerator jwt;
 	
 /*	@RequestMapping(value="/loginPage",method=RequestMethod.GET)
 	public ModelAndView getLoginPage(){
@@ -46,7 +51,8 @@ public class CustomerController {
 
 	@SuppressWarnings({ "static-access", "rawtypes" })
 	@RequestMapping(value = "/login",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity checkLoginDetail(@RequestBody LoginDto loginDto){
+	public ResponseEntity checkLoginDetail(@RequestBody LoginDto loginDto,HttpServletResponse response){
+		
 		String errorMsg = "Invalid username or password";
 		if(loginDto == null || (StringUtils.isEmpty(loginDto.getEmailOrPhoneNumber()) || StringUtils.isEmpty(loginDto.getPassword()))
 				 || !Validator.passwordValidate(loginDto.getPassword())){
@@ -56,6 +62,8 @@ public class CustomerController {
 			try{
 				if(loginService.checkLogin(loginDto)){
 					httpStatus = httpStatus.OK;
+					response.addHeader("token", jwt.generateJWTToken(loginDto.getEmailOrPhoneNumber()));
+					response.addHeader("secret", loginDto.getEmailOrPhoneNumber());
 					return new ResponseEntity<CustomerDto>(loginService.getCustomerDto(),httpStatus);
 				}
 				else{

@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import com.funcart.domain.dto.Response.SuccessResponse;
 import com.funcart.domain.dto.customer.ChangeEmailDto;
 import com.funcart.domain.dto.customer.ChangePasswordDto;
 import com.funcart.domain.dto.customer.UpdateCustomerDto;
+import com.funcart.utility.JWTTokenGenerator;
 import com.funcart.validator.Validator;
 
 @RestController
@@ -29,12 +31,18 @@ public class UpdateDetailsController {
 	
 	@Autowired
 	private ChangeEmailPasswordService emailPasswordService;
+	
+	@Autowired
+	private JWTTokenGenerator jwt;
 		
 	@SuppressWarnings({ "rawtypes" })
 	@RequestMapping(value = "/updateDetails",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity updateDetails(@RequestBody UpdateCustomerDto updateCustomerDto){
+	public ResponseEntity updateDetails(@RequestBody UpdateCustomerDto updateCustomerDto,@RequestHeader String token,@RequestHeader String secret){
 		String errorMsg = "Empty Fields";
-		if(StringUtils.isEmpty(updateCustomerDto.getEmail()) || StringUtils.isEmpty(updateCustomerDto.getPassword())){
+		if(!jwt.parseJWT(token,secret)){
+			httpStatus = HttpStatus.UNAUTHORIZED;
+			return new ResponseEntity<ErrorResponse>(new ErrorResponse(httpStatus.value(),"Token Time Expire"),httpStatus);
+		}else if(StringUtils.isEmpty(updateCustomerDto.getEmail()) || StringUtils.isEmpty(updateCustomerDto.getPassword())){
 			httpStatus = HttpStatus.BAD_REQUEST;
 			errorMsg = "Empty Email And Password";
 		}else if(StringUtils.isEmpty(updateCustomerDto.getNewBillingAddress()) && StringUtils.isEmpty(updateCustomerDto.getNewShippingAddress())
@@ -77,9 +85,12 @@ public class UpdateDetailsController {
 	
 	@SuppressWarnings({ "rawtypes" })
 	@RequestMapping(value = "/changeEmail",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity changeEmailDto(@RequestBody ChangeEmailDto changeEmailDto){
+	public ResponseEntity changeEmailDto(@RequestBody ChangeEmailDto changeEmailDto,@RequestHeader String token,@RequestHeader String secret){
 		String errorMsg = "Empty Fields Details";
-		if(StringUtils.isEmpty(changeEmailDto.getPassword()) || StringUtils.isEmpty(changeEmailDto.getNewEmail())
+		if(!jwt.parseJWT(token,secret)){
+			httpStatus = HttpStatus.UNAUTHORIZED;
+			return new ResponseEntity<ErrorResponse>(new ErrorResponse(httpStatus.value(),"Token Time Expire"),httpStatus);
+		}else if(StringUtils.isEmpty(changeEmailDto.getPassword()) || StringUtils.isEmpty(changeEmailDto.getNewEmail())
 			|| StringUtils.isEmpty(changeEmailDto.getOldEmail())){
 			httpStatus = HttpStatus.BAD_REQUEST;
 		}else if(!Validator.emailValidate(changeEmailDto.getOldEmail()) || !Validator.emailValidate(changeEmailDto.getNewEmail())
@@ -114,9 +125,12 @@ public class UpdateDetailsController {
 	
 	@SuppressWarnings({ "rawtypes" })
 	@RequestMapping(value = "/changePassword",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity changePasswordDto(@RequestBody ChangePasswordDto changePasswordDto){
+	public ResponseEntity changePasswordDto(@RequestBody ChangePasswordDto changePasswordDto,@RequestHeader String token,@RequestHeader String secret){
 		String errorMsg = "Empty Fields Details";
-		if(StringUtils.isEmpty(changePasswordDto.getNewPassword()) || StringUtils.isEmpty(changePasswordDto.getOldPassword())
+		if(!jwt.parseJWT(token,secret)){
+			httpStatus = HttpStatus.UNAUTHORIZED;
+			return new ResponseEntity<ErrorResponse>(new ErrorResponse(httpStatus.value(),"Token Time Expire"),httpStatus);
+		}else if(StringUtils.isEmpty(changePasswordDto.getNewPassword()) || StringUtils.isEmpty(changePasswordDto.getOldPassword())
 			|| StringUtils.isEmpty(changePasswordDto.getEmail())){
 			httpStatus = HttpStatus.BAD_REQUEST;
 		}else if(!Validator.emailValidate(changePasswordDto.getEmail()) || !Validator.passwordValidate(changePasswordDto.getNewPassword())

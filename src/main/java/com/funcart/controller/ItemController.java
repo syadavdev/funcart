@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,7 @@ import com.funcart.domain.dto.Response.SuccessResponse;
 import com.funcart.domain.dto.item.AddItemListDto;
 import com.funcart.domain.dto.item.DeleteItemListDto;
 import com.funcart.domain.dto.item.ItemDto;
+import com.funcart.utility.JWTTokenGenerator;
 import com.funcart.validator.Validator;
 
 @RestController
@@ -30,10 +32,17 @@ public class ItemController {
 	@Autowired
 	private ItemService itemService;
 	
+	@Autowired
+	private JWTTokenGenerator jwt;
+	
 	@SuppressWarnings({ "rawtypes", "static-access" })
 	@RequestMapping(value="/items",method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity getItems(){
+	public ResponseEntity getItems(@RequestHeader String token,@RequestHeader String secret){
 		String errorMsg = "Empty Item List";
+		if(!jwt.parseJWT(token,secret)){
+			httpStatus = HttpStatus.UNAUTHORIZED;
+			return new ResponseEntity<ErrorResponse>(new ErrorResponse(httpStatus.value(),"Token Time Expire"),httpStatus);
+		}else
 		try{
 			if(itemService.getList()){
 				httpStatus = httpStatus.OK;
