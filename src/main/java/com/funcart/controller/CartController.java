@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.funcart.dao.service.CartService;
+import com.funcart.domain.dto.CustomerEmailDto;
 import com.funcart.domain.dto.Response.ErrorResponse;
 import com.funcart.domain.dto.Response.SuccessResponse;
 import com.funcart.domain.dto.cart.CartDto;
@@ -32,33 +32,21 @@ public class CartController {
 	
 	@Autowired
 	private JWTTokenGenerator jwt;
-	
-	private class CustomerEmail{
-		private String email;
-
-		public String getEmail() {
-			return email;
-		}
-		@SuppressWarnings("unused")
-		public void setEmail(String email) {
-			this.email = email;
-		}
-	}
 
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/getCart",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity getCartItems(@RequestParam CustomerEmail email,@RequestHeader String token,@RequestHeader String secret){
+	public ResponseEntity getCartItems(@RequestBody CustomerEmailDto customerEmail,@RequestHeader String token,@RequestHeader String secret){
 		String errorMsg = "Invalid Email";
 		httpStatus = HttpStatus.BAD_REQUEST;
 		if(!jwt.parseJWT(token,secret)){
 			httpStatus = HttpStatus.UNAUTHORIZED;
 			return new ResponseEntity<ErrorResponse>(new ErrorResponse(httpStatus.value(),"Token Time Expire"),httpStatus);
-		}else if(StringUtils.isEmpty(email) || !Validator.emailValidate(email.getEmail())){
+		}else if(StringUtils.isEmpty(customerEmail) || !Validator.emailValidate(customerEmail.getEmail())){
 			return new ResponseEntity<ErrorResponse>(new ErrorResponse(httpStatus.value(),"Invalid Email"),httpStatus);
 		}
 		
 		try{
-			if(cartService.getCart(email.getEmail())){
+			if(cartService.getCart(customerEmail.getEmail())){
 				if(!cartService.getCartDto().getItemDtoList().isEmpty()){
 					httpStatus = HttpStatus.OK;
 					return new ResponseEntity<CartDto>(cartService.getCartDto(),httpStatus);
