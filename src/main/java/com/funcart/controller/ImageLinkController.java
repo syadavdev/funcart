@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.funcart.dao.service.ImageLinkService;
+import com.funcart.domain.dto.PicNameDto;
 import com.funcart.domain.dto.Response.ErrorResponse;
 import com.funcart.validator.Validator;
 
@@ -22,23 +23,12 @@ public class ImageLinkController {
 	@Autowired
 	private ImageLinkService imageLinkService;
 	
-	private class PicName{
-		private String picName;
-		
-		public String getPicName() {
-			return picName;
-		}
-		@SuppressWarnings("unused")
-		public void setPicName(String picName) {
-			this.picName = picName;
-		}
-	}
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value="/imageLink",method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity getImageLink(@RequestBody PicName picName){
+	public ResponseEntity getImageLink(@RequestBody PicNameDto picNameDto){
 		String errorMsg = "Empty Fields";
 		class PicLink{
-			public String picLink;
+			private String picLink;
 
 			@SuppressWarnings("unused")
 			public String getPicLink() {
@@ -48,14 +38,14 @@ public class ImageLinkController {
 				this.picLink = picLink;
 			}
 		}
-		if(StringUtils.isEmpty(picName)){
+		if(StringUtils.isEmpty(picNameDto)){
 			httpStatus = HttpStatus.BAD_REQUEST;
-		}else if(!Validator.imageNameValidate(picName.getPicName())){
+		}else if(!Validator.imageNameValidate(picNameDto.getPicName())){
 			httpStatus = HttpStatus.BAD_REQUEST;
 			errorMsg = "Invalid Input";
 		}else{
 			try{
-				if(imageLinkService.getImageLink(picName.getPicName())){
+				if(imageLinkService.getImageLink(picNameDto.getPicName())){
 					httpStatus = HttpStatus.OK;
 					PicLink picLinkStr = new PicLink();
 					picLinkStr.setPicLink(imageLinkService.getPicLink());
