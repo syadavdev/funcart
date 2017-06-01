@@ -23,85 +23,28 @@ public class OrderDao {
 	private EntityManager em;
 	
 	@Transactional(rollbackOn=Exception.class)
-	public boolean addOrderItems(Integer customerId,long customerPhoneNumber,Integer quantity)throws Exception{
+	public boolean getCustomerByEmail(String email) throws Exception {
 		boolean flag = false;
-		long check = em.createNativeQuery("INSERT INTO Orders(customerId,customerPhoneNumber,quantity) VALUES (?, ?, ?)")
-					  .setParameter(1, customerId)
-					  .setParameter(2, customerPhoneNumber)
-					  .setParameter(3, quantity)
-					  .executeUpdate();
-		if(check > 0)
-			flag = true;
-		return flag;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public List<Order> getCartList(int customerId)throws Exception{
-		List<Order> orderList = null;
-		
-		orderList = (List<Order>)em.createQuery("Select c From Cart as c where c.customerId = ?")
-					  			 .setParameter(0, new Integer(customerId))
-					  			 .getResultList();
-		return orderList;
-	}
-	@SuppressWarnings("unchecked")
-	public boolean  getCustomer(String email)throws Exception{
-		List<Order> orderList = null;
-		boolean flag=false;
-		List result= em.createQuery("Select c From Customer as c where c.email = ?")
-				.setParameter(0,email)
-					  			// .setParameter(0, new Integer(customerId))
-					  			 .getResultList();
-		return true;
-	}
-	
-	public Item getItem(int cartId)throws Exception{
-		Item item = null;
-		item = (Item) em.createQuery("Select i From Item i where i.itemId = ?")
-				 		.setParameter(0, cartId)
-				 		.getSingleResult();
-		return item;
-	}
-	
-
-	@Transactional(rollbackOn=Exception.class)
-	public int getCustomerByEmail(String email) throws Exception {
-	
 		 String customerId=null;
 		
 		try
 		{
 			int id = 0;
-			id = (Integer) em.createQuery("Select o.id  From Customer as o where o.email =:email")
+			id = (Integer) em.createQuery("Select customer.id,customer.username,customer.phonenumber,customer.billingaddress,customer.shippingaddress,cart.quantity,item.itemid,item.name,item.price "
+					+ " from cart inner join customer on customer.id=cart.customerid"
+					+ " inner join item on item.itemid=cart.itemid  where customer.email =:email")
 		   		  		 .setParameter("email",email)
-		   		  	//.executeUpdate();
+		   		  	     //.executeUpdate();
 		   		  		.getSingleResult();
-		
-		return id;
+			flag = true;
+		;
 		
 		}catch (Exception e) {
 		e.printStackTrace();
 		throw e;
 	}
-
+		return flag;
 }
-	/*public Cart checkExistCart(Integer itemId,Integer customerId)throws Exception{
-		boolean flag = false;
-		Cart cart = null;
-		try{
-			cart = (Cart)em.createQuery("Select c From Cart as cart cart.itemId = ? And cart.customerID = ?")
-					 	   .setParameter(0, itemId)
-					 	   .setParameter(1,customerId)
-					 	   .getSingleResult();
-		}catch(EntityNotFoundException e){
-			cart = null;
-		}catch(Exception e){
-			throw e;
-		}
-		if(cart != null)
-			flag = true;
-		return cart;
-	}*/
 }
 
 

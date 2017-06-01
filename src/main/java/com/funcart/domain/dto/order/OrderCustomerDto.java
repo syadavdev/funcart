@@ -1,6 +1,6 @@
 package com.funcart.domain.dto.order;
 
-public class orderCustomerDto {
+public class OrderCustomerDto {
 	
 	private int id;
 	private String name;

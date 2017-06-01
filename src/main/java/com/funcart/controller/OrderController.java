@@ -32,7 +32,7 @@ public class OrderController {
 	private OrderService orderService;
 
 	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/checkoutt",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/checkout",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity getCartItems(@RequestParam String email){
 		String errorMsg = "Invalid Email";
 		if(StringUtils.isEmpty(email) || !Validator.emailValidate(email)){

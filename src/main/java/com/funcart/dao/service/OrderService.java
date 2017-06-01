@@ -36,13 +36,11 @@ public class OrderService {
 		boolean flag = false;
 		List<Order> orderList = null;
 		
-		int customerId = orderDao.getCustomerByEmail(email);
+		boolean customerId = orderDao.getCustomerByEmail(email);
 		Integer itemId =0;
 		//Cart cart = orderDao.checkExistCart(itemId,customerId);
 		
-		if(customerId > 0){
-				orderList = orderDao.getCartList(customerId);
-			//orderList =  orderDao.getCustomer(customerId);
+		
 			if(!orderList.isEmpty() || orderList != null){
 				orderDto = new OrderDto();
 				orderDto.setEmail(email);
@@ -50,7 +48,7 @@ public class OrderService {
 				orderDto.setOrderDtoList(getCustomerItems(orderList));
 				flag = true;
 			}
-		}
+		
 		return flag;		
 	}
 	@SuppressWarnings("null")
@@ -66,12 +64,11 @@ public class OrderService {
 			//for(@SuppressWarnings("unused") Order order: orderList){
 				
 				
-				 orderDao.getCustomer(email);
+				 
 					OrderItemDto orderItemDto = new OrderItemDto();
 					orderItemDto.setPhoneNumber(customer.getPhoneNumber());
 					
-	orderDao.addOrderItems(customerId, orderItemDto.getPhoneNumber(), orderItemDto.getItemQty());
- orderDto.setOrderDtoList(getCartItems(orderList));
+	
 				 
 				 OrderItemDto orderItemDto1 = new OrderItemDto();
 				orderItemDto1.setName(customer.getUsername());
@@ -90,36 +87,9 @@ public class OrderService {
 	}
 	
 	
-	public List<OrderItemDto> getCartItems(List<Order> orderList)throws Exception{
-		List<OrderItemDto> orderItemDtoList = new ArrayList<OrderItemDto>();		
-		if(!orderList.isEmpty()){
-		int customerId = orderDao.getCustomerByEmail(orderDto.getEmail());
-			OrderItemDto orderItemDto = new OrderItemDto();
-			orderDao.addOrderItems(customerId, orderItemDto.getPhoneNumber(), orderItemDto.getItemQty());
-			Item item = null;
-
-			for(Order order: orderList){
-				
-				OrderItemDto orderItemDto1 = new OrderItemDto();
-				item = orderDao.getItem(order.getItemId());
-				orderItemDto1.setItemName(item.getName());
-				
-				orderItemDto1.setItemId(item.getItemId());
-				orderItemDto1.setItemTotalPrice(item.getPrice() * order.getQuantity());
-				orderItemDto1.setItemQty(order.getQuantity());
-				//orderDao.addOrderItems(customerId, orderItemDto1.getItemId(), orderItemDto1.getItemQty());
-				orderItemDtoList.add(orderItemDto1);
-				//OrderItemDto orderItemDto = new OrderItemDto();
-				//orderDao.addOrderItems(customerId, orderItemDto.getPhoneNumber(), orderItemDto.getItemQty());
-			
-			
-			
-				
-			}
-		}
-		return orderItemDtoList;
 	
-	}
+	
+
 	public OrderDto getOrderDto() {
 		return orderDto;
 	}
