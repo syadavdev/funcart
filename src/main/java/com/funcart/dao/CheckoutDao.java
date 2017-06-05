@@ -1,6 +1,6 @@
 package com.funcart.dao;
 
-import java.util.List;
+
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import com.funcart.domain.Customer;
 
-import com.funcart.domain.dto.PaymentDto;
-import com.funcart.domain.Customer;
+import com.funcart.domain.dto.CheckoutDto;
+
 
 @Repository
 public class CheckoutDao {
@@ -21,7 +21,8 @@ public class CheckoutDao {
 	
 	
 	@Transactional(rollbackOn = Exception.class)
-	public boolean paymentMode(PaymentDto paymentDto) throws Exception {
+	
+	public boolean customerCheckout(CheckoutDto paymentDto) throws Exception {
 		boolean flag = false;
 	
 		Customer customer = new Customer();

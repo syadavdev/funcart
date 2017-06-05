@@ -1,6 +1,6 @@
 package com.funcart.domain.dto;
 
-public class PaymentDto {
+public class CheckoutDto {
 	
 	private String paymentBy;
 

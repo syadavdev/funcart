@@ -1,6 +1,6 @@
 package com.funcart.controller;
 
-import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.funcart.dao.CheckoutDao;
 import com.funcart.dao.service.CheckoutService;
-import com.funcart.domain.Customer;
-import com.funcart.domain.Item;
 
-import com.funcart.domain.dto.PaymentDto;
+
+import com.funcart.domain.dto.CheckoutDto;
 import com.funcart.domain.dto.Response.ErrorResponse;
+
 import com.funcart.utility.JWTTokenGenerator;
 import com.funcart.validator.Validator;
 
@@ -29,6 +29,7 @@ public class CheckoutController {
 	
 	HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
+	@SuppressWarnings("unused")
 	@Autowired
 	private CheckoutDao paymentDao;
 	
@@ -41,15 +42,9 @@ public class CheckoutController {
 @SuppressWarnings({ "rawtypes", "static-access" })
 
 @RequestMapping(value = "/checkout",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
-public ResponseEntity savePayment(@RequestBody PaymentDto paymentDto)throws Exception{
-	@SuppressWarnings("unused")
+public ResponseEntity savePayment(@RequestBody CheckoutDto paymentDto,@RequestHeader String token,@RequestHeader String secret)throws Exception{
+	
 	String errorMsg = "Invalid Email";
-		httpStatus = HttpStatus.UNAUTHORIZED;
-	 if(StringUtils.isEmpty(paymentDto) || !Validator.emailValidate(paymentDto.getEmail())){
-		return new ResponseEntity<ErrorResponse>(new ErrorResponse(httpStatus.value(),"Invalid Email"),httpStatus);
-	}else
-	{
-	/*String errorMsg = "Invalid Input";
 	httpStatus = HttpStatus.BAD_REQUEST;
 	if(!jwt.parseJWT(token,secret)){
 		httpStatus = HttpStatus.UNAUTHORIZED;
@@ -58,29 +53,29 @@ public ResponseEntity savePayment(@RequestBody PaymentDto paymentDto)throws Exce
 		errorMsg = "Empty Input Fields";
 	}else if(!Validator.emailValidate(paymentDto.getEmail())){
 		errorMsg = "Invalid Email And Password";
-	}else{*/
+	}else{
 	
-	PaymentDto payObj = null;
+	@SuppressWarnings("unused")
+	CheckoutDto payObj = null;
 
 	try {
 		
 		if (checkoutService.paymentMode(paymentDto)) {
 			httpStatus = httpStatus.OK;
 			payObj = paymentDto;
+			return new ResponseEntity<CheckoutDto>(paymentDto, httpStatus);
+			//return new ResponseEntity<CheckoutDto>(checkoutService.getCheckDto(),httpStatus);
 		} else
 		{
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			errorMsg = checkoutService.getErrorMsg();
-			
-			return new ResponseEntity<PaymentDto>(paymentDto, httpStatus);
 		}
 	} catch (Exception e) {
 		httpStatus = HttpStatus.NOT_ACCEPTABLE;
-		payObj = new PaymentDto();
+		payObj = new CheckoutDto();
+		e.printStackTrace();
 	}
-
-	return new ResponseEntity<PaymentDto>(payObj, httpStatus);
-}
-	//return new ResponseEntity<ErrorResponse>(new ErrorResponse(httpStatus.value(),errorMsg),httpStatus);
+	}
+	return new ResponseEntity<ErrorResponse>(new ErrorResponse(httpStatus.value(),errorMsg),httpStatus);
 }
 }

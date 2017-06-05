@@ -6,29 +6,25 @@ import org.springframework.stereotype.Service;
 
 
 import com.funcart.dao.CheckoutDao;
-import com.funcart.domain.Customer;
-import com.funcart.domain.dto.PaymentDto;
+
+import com.funcart.domain.dto.CheckoutDto;
 import com.funcart.validator.Validator;
 
 @Service
 public class CheckoutService {
 	
 	@Autowired
-	private CheckoutDao paymentDao;
+	private CheckoutDao checkDao;
+
 	
 	private String errorMsg;
-	public String getErrorMsg() {
-		return errorMsg;
-	}
-	public void setErrorMsg(String errorMsg) {
-		this.errorMsg = errorMsg;
-	}
-	public boolean paymentMode(PaymentDto paymentDto) throws Exception{
+	
+	public boolean paymentMode(CheckoutDto paymentDto) throws Exception{
 		
 		
-		if(Validator.phoneNumberValidate(paymentDto.getEmail())){
+		if(Validator.emailValidate(paymentDto.getEmail())){
 		
-			if(paymentDao.paymentMode(paymentDto)){
+			if(checkDao.customerCheckout(paymentDto)){
 				return true;
 			}else{
 				errorMsg = "Email Invalid";
@@ -45,4 +41,21 @@ public class CheckoutService {
 	
 	}
 	
+	
+
+
+public CheckoutDao getCheckDao() {
+	return checkDao;
+}
+public void setCheckDao(CheckoutDao checkDao) {
+	this.checkDao = checkDao;
+}
+
+
+public String getErrorMsg() {
+	return errorMsg;
+}
+public void setErrorMsg(String errorMsg) {
+	this.errorMsg = errorMsg;
+}
 }
