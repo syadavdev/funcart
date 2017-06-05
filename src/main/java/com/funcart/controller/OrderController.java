@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,11 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.funcart.dao.service.CartService;
 import com.funcart.dao.service.OrderService;
+import com.funcart.domain.dto.CustomerEmailDto;
 import com.funcart.domain.dto.Response.ErrorResponse;
 import com.funcart.domain.dto.Response.SuccessResponse;
 import com.funcart.domain.dto.cart.CartDto;
 import com.funcart.domain.dto.cart.UpdateCartDto;
+import com.funcart.domain.dto.order.CustomerMailDto;
 import com.funcart.domain.dto.order.OrderDto;
+import com.funcart.utility.JWTTokenGenerator;
 import com.funcart.validator.Validator;
 
 @RestController
@@ -31,19 +35,27 @@ public class OrderController {
 	@Autowired
 	private OrderService orderService;
 
+	@Autowired
+	private JWTTokenGenerator jwt;
+
 	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/checkout",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity getCartItems(@RequestParam String email){
+	@RequestMapping(value = "/createOrder",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity createOrder(@RequestBody CustomerMailDto customerEmail,@RequestHeader String token,@RequestHeader String secret){
 		String errorMsg = "Invalid Email";
-		if(StringUtils.isEmpty(email) || !Validator.emailValidate(email)){
-			return new ResponseEntity<ErrorResponse>(new ErrorResponse(400,"Invalid Email"),httpStatus);
+		httpStatus = HttpStatus.BAD_REQUEST;
+		if(!jwt.parseJWT(token,secret)){
+			httpStatus = HttpStatus.UNAUTHORIZED;
+			return new ResponseEntity<ErrorResponse>(new ErrorResponse(httpStatus.value(),"Token Time Expire"),httpStatus);
+		}else if(StringUtils.isEmpty(customerEmail) || !Validator.emailValidate(customerEmail.getEmail())){
+			return new ResponseEntity<ErrorResponse>(new ErrorResponse(httpStatus.value(),"Invalid Email"),httpStatus);
 		}
 		
 		try{
-			if(orderService.getCart(email)){
-				if(!orderService.getOrderDto().getOrderDtoList().isEmpty()){
+			if(orderService.getOrderDetail(customerEmail.getEmail())){
+				if(!orderService.getOrderDto().getOrderItemDtoList().isEmpty()){
+					if(!orderService.getOrderDto().getOrdercustomerDtoList().isEmpty())
 					httpStatus = HttpStatus.OK;
-					return new ResponseEntity<OrderDto>(httpStatus);
+					return new ResponseEntity<OrderDto>(orderService.getOrderDto(),httpStatus);
 				}else{
 					httpStatus = HttpStatus.NOT_FOUND;
 					errorMsg = "Order Not Found";

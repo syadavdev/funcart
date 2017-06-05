@@ -3,12 +3,9 @@ package com.funcart.domain.dto.order;
 public class OrderItemDto {
 	
 	private String itemName;
-	
-	
-
 	private int itemId;
-	
 	private int itemQty;
+	private Double itemTotalPrice;
 	public String getItemName() {
 		return itemName;
 	}
@@ -27,8 +24,6 @@ public class OrderItemDto {
 	public void setItemQty(int itemQty) {
 		this.itemQty = itemQty;
 	}
-
-	
 	public Double getItemTotalPrice() {
 		return itemTotalPrice;
 	}
@@ -37,6 +32,6 @@ public class OrderItemDto {
 	}
 
 
-	private Double itemTotalPrice;
+
 
 }

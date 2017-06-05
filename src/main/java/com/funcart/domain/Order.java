@@ -20,13 +20,21 @@ public class Order {
 
 	@Column
 	private String itemName;
-
 	
+	@Column
+	private String paymentMode;
+	
+	public String getPaymentMode() {
+		return paymentMode;
+	}
+	public void setPaymentMode(String paymentMode) {
+		this.paymentMode = paymentMode;
+	}
 	@Column
 	private int customerId;
 	
 	@Column
-	private int customerPhoneNumber;
+	private long customerPhoneNumber;
 	
 	public String getItemName() {
 		return itemName;
@@ -79,11 +87,6 @@ public class Order {
 	
 	@Column
 	private int quantity;
-
-
-
-
-	
 	
 	public int getCustomerId() {
 		return customerId;
@@ -98,13 +101,13 @@ public class Order {
 	public void setCustomerName(String customerName) {
 		this.customerName = customerName;
 	}
-	public int getcustomerPhoneNumber() {
+	
+	public long getCustomerPhoneNumber() {
 		return customerPhoneNumber;
 	}
-	public void setcustomerPhoneNumber(int customerPhoneNumber) {
+	public void setCustomerPhoneNumber(long customerPhoneNumber) {
 		this.customerPhoneNumber = customerPhoneNumber;
 	}
-	
 	public int getId() {
 		return id;
 	}

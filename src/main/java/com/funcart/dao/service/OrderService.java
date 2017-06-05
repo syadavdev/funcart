@@ -19,91 +19,109 @@ import com.funcart.domain.dto.cart.CartItemDto;
 import com.funcart.domain.dto.cart.UpdateCartDto;
 import com.funcart.domain.dto.cart.UpdateCartItemDto;
 import com.funcart.domain.dto.customer.CustomerDto;
+import com.funcart.domain.dto.order.OrderCustomerDto;
 import com.funcart.domain.dto.order.OrderDto;
 import com.funcart.domain.dto.order.OrderItemDto;
 
 @Service
 public class OrderService {
-	
+
 	@Autowired
 	private OrderDao orderDao;
-	
+
 	private OrderDto orderDto;
-	private CustomerDto customerDto;
 	private String errorMsg;
-	
-	public boolean getCart(String email) throws Exception{
+
+	public boolean getOrderDetail(String email) throws Exception {
 		boolean flag = false;
 		List<Order> orderList = null;
+
+		orderList = orderDao.getCustomerByEmail(email);
+		if (orderList != null) {
 		
-		boolean customerId = orderDao.getCustomerByEmail(email);
-		Integer itemId =0;
-		//Cart cart = orderDao.checkExistCart(itemId,customerId);
-		
-		
-			if(!orderList.isEmpty() || orderList != null){
+			if (!orderList.isEmpty() || orderList != null) {
 				orderDto = new OrderDto();
 				orderDto.setEmail(email);
-				//orderDto.setOrderDtoList(getCartItems(orderList));
-				orderDto.setOrderDtoList(getCustomerItems(orderList));
+				orderDto.setOrderItemDtoList(getCartItems(orderList));
+				orderDto.setOrdercustomerDtoList(getCustomerItems(orderList));
+				
 				flag = true;
+
 			}
-		
-		return flag;		
+		}
+		return flag;
+
 	}
-	@SuppressWarnings("null")
-	public List<OrderItemDto> getCustomerItems(List<Order> orderList)throws Exception{
-		List<OrderItemDto> orderItemDtoList = new ArrayList<OrderItemDto>();		
-		if(!orderList.isEmpty()){
-			//int customerId = orderDao.getCustomerByEmail(orderDto.getEmail());
-			//OrderItemDto orderItemDto = new OrderItemDto();
-			//orderDao.addOrderItems(customerId, orderItemDto.getPhoneNumber(), orderItemDto.getItemQty());
-			Customer customer = null;
-			Integer customerId =0;
-			String email=null;
-			//for(@SuppressWarnings("unused") Order order: orderList){
-				
-				
-				 
+
+	public List<OrderItemDto> getCartItems(List<Order> orderList) throws Exception {
+		List<OrderItemDto> orderItemDtoList = new ArrayList<OrderItemDto>();
+
+		if (!orderList.isEmpty()) {
+
+			try {
+
+				for (Order order : orderList) {
+
 					OrderItemDto orderItemDto = new OrderItemDto();
-					orderItemDto.setPhoneNumber(customer.getPhoneNumber());
-					
-	
-				 
-				 OrderItemDto orderItemDto1 = new OrderItemDto();
-				orderItemDto1.setName(customer.getUsername());
-				
-				
-				//orderDao.addOrderItems(customerId, orderItemDto1.getItemId(), orderItemDto1.getItemQty());
-				//orderItemDtoList.add(orderItemDto1);
-	
-			
-			
-			
-				
-		
+
+					orderItemDto.setItemName(order.getItemName());
+					orderItemDto.setItemId(order.getItemId());
+					orderItemDto.setItemTotalPrice(order.getPrice() * order.getQuantity());
+					orderItemDto.setItemQty(order.getQuantity());
+					orderItemDtoList.add(orderItemDto);
+					orderDto.setPaymentMode(order.getPaymentMode());
+					orderDto.setOrderId(order.getId());
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw e;
+			}
 		}
 		return orderItemDtoList;
 	}
-	
-	
-	
-	
+
+	public List<OrderCustomerDto> getCustomerItems(List<Order> orderList) throws Exception {
+		List<OrderCustomerDto> ordercustomerDtoList = new ArrayList<OrderCustomerDto>();
+
+		if (!orderList.isEmpty()) {
+			Item item = null;
+			try {
+
+				for (Order order : orderList) {
+
+					OrderCustomerDto ordercustomerDto = new OrderCustomerDto();
+
+					ordercustomerDto.setName(order.getCustomerName());
+					ordercustomerDto.setId(order.getCustomerId());
+					ordercustomerDto.setBillingaddress(order.getBillingAddressId());
+					ordercustomerDto.setShippingAddress(order.getShippingAddressId());
+					ordercustomerDto.setPhoneNumber(order.getCustomerPhoneNumber());
+
+					ordercustomerDtoList.add(ordercustomerDto);
+
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw e;
+			}
+		}
+		return ordercustomerDtoList;
+	}
 
 	public OrderDto getOrderDto() {
 		return orderDto;
 	}
+
 	public void setOrderDto(OrderDto orderDto) {
 		this.orderDto = orderDto;
 	}
+
 	public String getErrorMsg() {
 		return errorMsg;
 	}
+
 	public void setErrorMsg(String errorMsg) {
 		this.errorMsg = errorMsg;
 	}
-	
-
-
 
 }

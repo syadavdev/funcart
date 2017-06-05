@@ -1,4 +1,4 @@
-/*package com.funcart.dao;
+package com.funcart.dao;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import com.funcart.domain.dto.PaymentDto;
 import com.funcart.domain.Customer;
 
 @Repository
-public class PaymentDao {
+public class CheckoutDao {
 
 	@PersistenceContext
 	private EntityManager em;
@@ -22,32 +22,12 @@ public class PaymentDao {
 	
 	@Transactional(rollbackOn = Exception.class)
 	public boolean paymentMode(PaymentDto paymentDto) throws Exception {
-		boolean flag1 = false;
-		
-		if(paymentDto.getPaymentBy().equals("cash")){
-			
-	               flag1=true;
-			paymentDto.setPaymentBy("payment successfull by cash");
-		}
-		else if
-		(paymentDto.getPaymentBy().equals("card"))
-		{ 
-			paymentDto.setPaymentBy("payment successfull by card");
-			flag1=true;
-		}
-		
-		else 
-			paymentDto.setPaymentBy("payment unsuccessfull");
-			
-		return flag1;
-	}
-		}
-
-		
-
-		/*boolean flag = false;
+		boolean flag = false;
+	
 		Customer customer = new Customer();
 		customer.setEmail(paymentDto.getEmail());
+		customer.setBillingAddress(paymentDto.getBillingaddress());
+		customer.setShippingAddress(paymentDto.getShippingaddress());
 		customer.setPaymentBy(paymentDto.getPaymentBy());
 		
 	try {
@@ -56,9 +36,11 @@ public class PaymentDao {
 
 			int result = em
 					.createQuery(
-							"UPDATE Customer SET paymentBy= :paymentBy"	+ " where email = :email")
+							"UPDATE Customer SET paymentBy= :paymentBy, billingAddress = :billingAddress,shippingAddress = :shippingAddress"	+ " where email = :email")
 					.setParameter("email", customer.getEmail())
 					.setParameter("paymentBy", customer.getPaymentBy())
+					.setParameter("shippingAddress", customer.getShippingAddress())
+					.setParameter("billingAddress", customer.getBillingAddress())
 					.executeUpdate();
 
 			if (result >= 0)
@@ -78,11 +60,18 @@ public class PaymentDao {
 		boolean flag = false;
 		if (!customer.getPaymentBy().isEmpty() || customer.getPaymentBy().equals("cash")) {
 			flag = true;
+			if (!customer.getPaymentBy().isEmpty() || customer.getPaymentBy().equals("card")) {
+				flag = true;
 		} else {
-			flag = true;
+			flag = false;
+		} }else
+		{
+			flag=false;
 		}
-		return flag;*/
 	
+		return flag;
+	}
 	
-	
+}
+
 

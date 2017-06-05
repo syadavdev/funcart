@@ -4,7 +4,7 @@ public class OrderCustomerDto {
 	
 	private int id;
 	private String name;
-	private Double phoneNumber;
+	private long phoneNumber;
 	private String billingaddress;
 	private String shippingAddress;
 	public int getId() {
@@ -19,10 +19,12 @@ public class OrderCustomerDto {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Double getPhoneNumber() {
+	
+	
+	public long getPhoneNumber() {
 		return phoneNumber;
 	}
-	public void setPhoneNumber(Double phoneNumber) {
+	public void setPhoneNumber(long phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 	public String getBillingaddress() {
