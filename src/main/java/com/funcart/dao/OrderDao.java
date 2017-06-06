@@ -53,7 +53,29 @@ public class OrderDao {
 		return orderList;
 		
 }
+	@SuppressWarnings("rawtypes")
+	@Transactional(rollbackOn=Exception.class)
+	public List<Order> getCustomerEmail(String email) throws Exception {
+		List<Order> orderList = null;
+		boolean flag=false;
+		 try
+		{
+				
+				int i = em.createNativeQuery("delete from cart where customerid=(select id from customer  where customer.email =:email)")
+							              .setParameter("email", email)
+							              
+							              .executeUpdate();
+				if(i>0)	
+			flag=true;
+	}catch(Exception e) { 
+		e.printStackTrace();
+		throw e;
+	}
+		return orderList;
+		
 }
+}
+
 
 
 	

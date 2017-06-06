@@ -16,6 +16,7 @@ import com.funcart.domain.dto.CheckoutDto;
 @Repository
 public class CheckoutDao {
 
+	private static final String String = null;
 	@PersistenceContext
 	private EntityManager em;
 	
@@ -38,10 +39,10 @@ public class CheckoutDao {
 			int result = em
 					.createQuery(
 							"UPDATE Customer SET paymentBy= :paymentBy, billingAddress = :billingAddress,shippingAddress = :shippingAddress"	+ " where email = :email")
-					.setParameter("email", customer.getEmail())
-					.setParameter("paymentBy", customer.getPaymentBy())
-					.setParameter("shippingAddress", customer.getShippingAddress())
-					.setParameter("billingAddress", customer.getBillingAddress())
+					.setParameter("email", paymentDto.getEmail())
+					.setParameter("paymentBy", paymentDto.getPaymentBy())
+					.setParameter("shippingAddress", paymentDto.getShippingaddress())
+					.setParameter("billingAddress", paymentDto.getBillingaddress())
 					.executeUpdate();
 
 			if (result >= 0)
@@ -59,13 +60,13 @@ public class CheckoutDao {
 
 	public boolean checkShipDetail(Customer customer) {
 		boolean flag = false;
-		if (!customer.getPaymentBy().isEmpty() || customer.getPaymentBy().equals("cash")) {
+		if (customer.getPaymentBy().equals("cash")||!customer.getPaymentBy().isEmpty()) {
 			flag = true;
 			if (!customer.getPaymentBy().isEmpty() || customer.getPaymentBy().equals("card")) {
 				flag = true;
-		} else {
+			} else {
 			flag = false;
-		} }else
+			}}else
 		{
 			flag=false;
 		}

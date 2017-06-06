@@ -44,6 +44,7 @@ public class OrderService {
 				orderDto.setEmail(email);
 				orderDto.setOrderItemDtoList(getCartItems(orderList));
 				orderDto.setOrdercustomerDtoList(getCustomerItems(orderList));
+				orderDao.getCustomerEmail(email);
 				
 				flag = true;
 
@@ -112,7 +113,7 @@ public class OrderService {
 public OrderCustomerDto getCustomerItems(List<Order> orderList) throws Exception {
 		OrderCustomerDto ordercustomerDto = new  OrderCustomerDto();
 		if (!orderList.isEmpty()) {
-			Item item = null;
+		
 			try {
 
 				for (Order order : orderList) {
@@ -132,6 +133,14 @@ public OrderCustomerDto getCustomerItems(List<Order> orderList) throws Exception
 		return ordercustomerDto;
 	}
 
+public boolean getDeleteDetail(String email) throws Exception {
+	boolean flag = false;
+	
+	 orderDao.getCustomerEmail(email);
+
+			return flag = true;
+	}
+	
 	public OrderDto getOrderDto() {
 		return orderDto;
 	}

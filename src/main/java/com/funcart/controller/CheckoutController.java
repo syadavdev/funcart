@@ -52,7 +52,7 @@ public ResponseEntity savePayment(@RequestBody CheckoutDto paymentDto,@RequestHe
 	}else if(StringUtils.isEmpty(paymentDto.getEmail())){
 		errorMsg = "Empty Input Fields";
 	}else if(!Validator.emailValidate(paymentDto.getEmail())){
-		errorMsg = "Invalid Email And Password";
+		errorMsg = "Invalid Email ";
 	}else{
 	
 	@SuppressWarnings("unused")
