@@ -3,14 +3,24 @@ package com.funcart.domain.dto.order;
 import java.util.List;
 
 import com.funcart.domain.Order;
+import com.funcart.domain.dto.customer.CustomerDto;
 
 public class OrderDto {
 	
 	private String email;
 	private List<OrderItemDto> orderItemDtoList;
-	private List<OrderCustomerDto> ordercustomerDtoList;
+	//private List<OrderCustomerDto> ordercustomerDtoList;
+	private OrderCustomerDto ordercustomerDtoList ;
 	private int orderId;
 	private String PaymentMode;
+	
+	public OrderCustomerDto getOrdercustomerDtoList() {
+		return ordercustomerDtoList;
+	}
+	public void setOrdercustomerDtoList(OrderCustomerDto ordercustomerDtoList) {
+		this.ordercustomerDtoList = ordercustomerDtoList;
+	}
+
 	public String getPaymentMode() {
 		return PaymentMode;
 	}
@@ -26,16 +36,6 @@ public class OrderDto {
 	public void setOrderId(int i) {
 		this.orderId = i;
 	}
-	public List<OrderCustomerDto> getOrdercustomerDtoList() {
-		return ordercustomerDtoList;
-	}
-
-	public void setOrdercustomerDtoList(List<OrderCustomerDto> ordercustomerDtoList) {
-		this.ordercustomerDtoList = ordercustomerDtoList;
-	}
-
-	
-
 	public List<OrderItemDto> getOrderItemDtoList() {
 		return orderItemDtoList;
 	}

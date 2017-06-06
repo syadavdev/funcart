@@ -1,6 +1,8 @@
 
 package com.funcart.controller;
 
+import java.util.List;
+
 import javax.persistence.NoResultException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ import com.funcart.domain.dto.cart.CartDto;
 import com.funcart.domain.dto.cart.UpdateCartDto;
 import com.funcart.domain.dto.order.CustomerMailDto;
 import com.funcart.domain.dto.order.OrderDto;
+import com.funcart.domain.dto.order.OrderItemDto;
 import com.funcart.utility.JWTTokenGenerator;
 import com.funcart.validator.Validator;
 
@@ -38,7 +41,7 @@ public class OrderController {
 	@Autowired
 	private JWTTokenGenerator jwt;
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/createOrder",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity createOrder(@RequestBody CustomerMailDto customerEmail,@RequestHeader String token,@RequestHeader String secret){
 		String errorMsg = "Invalid Email";
@@ -53,7 +56,8 @@ public class OrderController {
 		try{
 			if(orderService.getOrderDetail(customerEmail.getEmail())){
 				if(!orderService.getOrderDto().getOrderItemDtoList().isEmpty()){
-					if(!orderService.getOrderDto().getOrdercustomerDtoList().isEmpty())
+					//if(!orderService.getOrderDto().getOrdercustomerDtoList().isEmpty())
+					//if(!orderService.getOrderDto().getOrdercustomerDto().isEmpty())
 					httpStatus = HttpStatus.OK;
 					return new ResponseEntity<OrderDto>(orderService.getOrderDto(),httpStatus);
 				}else{

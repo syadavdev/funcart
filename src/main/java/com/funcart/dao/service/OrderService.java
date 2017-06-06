@@ -80,7 +80,7 @@ public class OrderService {
 		return orderItemDtoList;
 	}
 
-	public List<OrderCustomerDto> getCustomerItems(List<Order> orderList) throws Exception {
+/*	public List<OrderCustomerDto> getCustomerItems(List<Order> orderList) throws Exception {
 		List<OrderCustomerDto> ordercustomerDtoList = new ArrayList<OrderCustomerDto>();
 
 		if (!orderList.isEmpty()) {
@@ -92,7 +92,7 @@ public class OrderService {
 					OrderCustomerDto ordercustomerDto = new OrderCustomerDto();
 
 					ordercustomerDto.setName(order.getCustomerName());
-					ordercustomerDto.setId(order.getCustomerId());
+					//ordercustomerDto.setEmail(order.getCustomerId());
 					ordercustomerDto.setBillingaddress(order.getBillingAddressId());
 					ordercustomerDto.setShippingAddress(order.getShippingAddressId());
 					ordercustomerDto.setPhoneNumber(order.getCustomerPhoneNumber());
@@ -106,6 +106,30 @@ public class OrderService {
 			}
 		}
 		return ordercustomerDtoList;
+	}*/
+	
+	
+public OrderCustomerDto getCustomerItems(List<Order> orderList) throws Exception {
+		OrderCustomerDto ordercustomerDto = new  OrderCustomerDto();
+		if (!orderList.isEmpty()) {
+			Item item = null;
+			try {
+
+				for (Order order : orderList) {
+					ordercustomerDto.setName(order.getCustomerName());
+					ordercustomerDto.setBillingaddress(order.getBillingAddressId());
+					ordercustomerDto.setShippingAddress(order.getShippingAddressId());
+					ordercustomerDto.setPhoneNumber(order.getCustomerPhoneNumber());
+
+					////customer.add(ordercustomerDto);
+
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw e;
+			}
+		}
+		return ordercustomerDto;
 	}
 
 	public OrderDto getOrderDto() {
