@@ -34,8 +34,8 @@ public class OrderDao {
 			//Object id = null;
 			int i = em.createNativeQuery("insert into orders(customerid,customername,customerphonenumber,billingaddressid,shippingaddressid,paymentmode,quantity,itemid,itemname,price)"
 					+"Select customer.id,customer.username,customer.phonenumber,customer.billingaddress,customer.shippingaddress,customer.paymentby,cart.quantity,item.itemid,item.name,item.price "
-					+ "from Cart inner join customer on customer.id=cart.customerid"
-					+ " inner join Item on item.itemid=cart.itemid  where customer.email =:email")
+					+ "from cart inner join customer on customer.id=cart.customerid"
+					+ " inner join item on item.itemid=cart.itemid  where customer.email =:email")
 					.setParameter("email", email)
 		   		  	 .executeUpdate();
 			if(i > 0){
