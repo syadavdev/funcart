@@ -2,10 +2,8 @@ package com.funcart.domain.dto;
 
 public class CheckoutDto {
 	
-	private String paymentBy;
-
 	private String email;
-	
+	private String paymentBy;
 	private String billingaddress;
 	private String shippingaddress;
 	 

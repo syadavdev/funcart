@@ -9,7 +9,7 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 import com.funcart.domain.Customer;
-
+import com.funcart.domain.Order;
 import com.funcart.domain.dto.CheckoutDto;
 
 
@@ -22,7 +22,6 @@ public class CheckoutDao {
 	
 	
 	@Transactional(rollbackOn = Exception.class)
-	
 	public boolean customerCheckout(CheckoutDto paymentDto) throws Exception {
 		boolean flag = false;
 	
@@ -38,7 +37,7 @@ public class CheckoutDao {
 
 			int result = em
 					.createQuery(
-							"UPDATE Customer SET paymentBy= :paymentBy, billingAddress = :billingAddress,shippingAddress = :shippingAddress"	+ " where email = :email")
+							"UPDATE Customer c  SET c.paymentBy = :paymentBy, c.billingAddress = :billingAddress,c.shippingAddress = :shippingAddress"	+ " where  c.email =:email)")
 					.setParameter("email", paymentDto.getEmail())
 					.setParameter("paymentBy", paymentDto.getPaymentBy())
 					.setParameter("shippingAddress", paymentDto.getShippingaddress())
