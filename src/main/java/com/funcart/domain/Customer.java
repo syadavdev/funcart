@@ -33,18 +33,16 @@ public class Customer{
 	@Column
 	private String shippingAddress; 
 	
-	/*@Column
+	@Column
 	private String paymentBy;
 	
 	public String getPaymentBy() {
 		return paymentBy;
 	}
-
 	public void setPaymentBy(String paymentBy) {
 		this.paymentBy = paymentBy;
 	}
-
-	*/
+	
 	
 	public int getId() {
 		return id;
